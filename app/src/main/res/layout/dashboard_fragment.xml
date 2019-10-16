@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/COMMON_LINEAR_LAYOUT"
+    android:orientation="horizontal"
+    android:background="@drawable/app_background_repeating">
+
+    <LinearLayout
+        style="@style/COMMON_LINEAR_LAYOUT"
+        android:layout_weight="0.35"
+        android:orientation="vertical">
+
+        <LinearLayout
+            style="@style/COMMON_LINEAR_LAYOUT"
+            android:layout_weight="0.5"
+            android:orientation="vertical">
+
+            <LinearLayout
+                style="@style/COMMON_LINEAR_LAYOUT"
+                android:layout_weight="0.5"
+                android:orientation="horizontal"
+                android:paddingRight="@dimen/margin_25dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.25">
+
+                    <ImageView
+                        android:id="@+id/tb1"
+                        style="@style/COMMON_TABLE_MARGINS"
+                        android:src="@drawable/tb4four_square" />
+
+                    <TextView
+                        style="@style/TABLE_NO"
+                        android:text="@string/table1" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.25">
+
+                    <ImageView
+                        android:id="@+id/tb2"
+                        style="@style/COMMON_TABLE_MARGINS"
+                        android:src="@drawable/tb4four_square" />
+
+                    <TextView
+                        style="@style/TABLE_NO"
+                        android:text="@string/table2" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.25">
+
+                    <ImageView
+                        android:id="@+id/tb3"
+                        style="@style/COMMON_TABLE_MARGINS"
+                        android:src="@drawable/tb4four_square" />
+
+                    <TextView
+                        style="@style/TABLE_NO"
+                        android:text="@string/table3"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.25">
+
+                    <ImageView
+                        android:id="@+id/tb4"
+                        style="@style/COMMON_TABLE_MARGINS"
+                        android:src="@drawable/tb4two_vertical" />
+
+                    <TextView
+                        style="@style/TABLE_NO"
+                        android:text="@string/table4"/>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/COMMON_LINEAR_LAYOUT"
+                android:layout_weight="0.5"
+                android:orientation="horizontal"
+                android:paddingRight="@dimen/margin_25dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.25">
+
+                    <ImageView
+                        android:id="@+id/tb5"
+                        style="@style/COMMON_TABLE_MARGINS"
+                        android:src="@drawable/tb4four_round" />
+
+                    <TextView
+                        style="@style/TABLE_NO"
+                        android:text="@string/table5"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.25">
+
+                    <ImageView
+                        android:id="@+id/tb6"
+                        style="@style/COMMON_TABLE_MARGINS"
+                        android:src="@drawable/tb4four_round" />
+
+                    <TextView
+                        style="@style/TABLE_NO"
+                        android:text="@string/table6"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.25">
+
+                    <ImageView
+                        android:id="@+id/tb7"
+                        style="@style/COMMON_TABLE_MARGINS"
+                        android:src="@drawable/tb4four_round" />
+
+                    <TextView
+                        style="@style/TABLE_NO"
+                        android:text="@string/table7"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.25">
+
+                    <ImageView
+                        android:id="@+id/tb8"
+                        style="@style/COMMON_TABLE_MARGINS"
+                        android:src="@drawable/tb4two_vertical" />
+
+                    <TextView
+                        style="@style/TABLE_NO"
+                        android:text="@string/table8"/>
+
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/COMMON_LINEAR_LAYOUT"
+            android:layout_weight="0.5"
+            android:orientation="vertical">
+
+            <LinearLayout
+                style="@style/COMMON_LINEAR_LAYOUT"
+                android:layout_weight="0.9"
+                android:paddingRight="@dimen/margin_50dp"
+                android:paddingBottom="@dimen/margin_10dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/partition_horizontal" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/COMMON_LINEAR_LAYOUT"
+                android:layout_weight="0.1"
+                android:orientation="horizontal"
+                android:paddingRight="@dimen/margin_25dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.1">
+
+                    <ImageView
+                        android:id="@+id/tb9"
+                        style="@style/COMMON_TABLE_MARGINS"
+                        android:src="@drawable/tb4ten" />
+
+                    <TextView
+                        style="@style/TABLE_NO"
+                        android:text="@string/table10"/>
+
+                </RelativeLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentBottom="true"
+                    android:layout_weight="0.9"
+                    android:adjustViewBounds="true"
+                    android:paddingLeft="@dimen/margin_25dp"
+                    android:paddingTop="@dimen/margin_50dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/partition_vertical" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/COMMON_LINEAR_LAYOUT"
+        android:layout_weight="0.65"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.4">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.4"
+                android:paddingBottom="@dimen/margin_25dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/kitchen" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/kitchen"
+                android:textSize="@dimen/text_size_30sp"
+                android:layout_centerInParent="true"
+                android:textColor="@color/black"
+                android:textStyle="bold"/>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            style="@style/COMMON_LINEAR_LAYOUT"
+            android:layout_weight="0.6"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.6"
+                android:scaleType="fitEnd"
+                android:src="@drawable/washroom" />
+
+            <LinearLayout
+                style="@style/COMMON_LINEAR_LAYOUT"
+                android:layout_weight="0.4"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:src="@drawable/entrance" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/cash_register" />
+
+                    <TextView
+                        style="@style/TABLE_NO"
+                        android:text="@string/reception"/>
+
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

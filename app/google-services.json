@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "165296726670",
+    "firebase_url": "https://restaurantdineindb.firebaseio.com",
+    "project_id": "restaurantdineindb",
+    "storage_bucket": "restaurantdineindb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:165296726670:android:a44ccf75c559d504aedfdf",
+        "android_client_info": {
+          "package_name": "com.example.restaurantdine_in"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "165296726670-ppv7spiv1cgg42o1gudt22v93gd2tf2h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBB9U8KmQ3oD02gODLnypx1_XXfm51XtdU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "165296726670-ppv7spiv1cgg42o1gudt22v93gd2tf2h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

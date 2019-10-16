@@ -1,0 +1,33 @@
+<resources>
+
+    <!-- Common Dimensions -->\
+    <dimen name="text_size_15sp">15sp</dimen>
+    <dimen name="text_size_20sp">20sp</dimen>
+    <dimen name="text_size_30sp">30sp</dimen>
+    <dimen name="text_size_40sp">40sp</dimen>
+
+    <dimen name="margin_1dp">1dp</dimen>
+    <dimen name="margin_3dp">3dp</dimen>
+    <dimen name="margin_5dp">5dp</dimen>
+    <dimen name="margin_10dp">10dp</dimen>
+    <dimen name="margin_15dp">15dp</dimen>
+    <dimen name="margin_20dp">20dp</dimen>
+    <dimen name="margin_25dp">25dp</dimen>
+    <dimen name="margin_30dp">30dp</dimen>
+    <dimen name="margin_40dp">40dp</dimen>
+    <dimen name="margin_50dp">50dp</dimen>
+    <dimen name="margin_75dp">75dp</dimen>
+    <dimen name="margin_80dp">80dp</dimen>
+    <dimen name="margin_150dp">150dp</dimen>
+    <dimen name="margin_180dp">180dp</dimen>
+    <dimen name="margin_200dp">200dp</dimen>
+    <dimen name="margin_240dp">240dp</dimen>
+    <dimen name="margin_580dp">580dp</dimen>
+    <dimen name="margin_600dp">600dp</dimen>
+    <dimen name="margin_650dp">650dp</dimen>
+    <dimen name="margin_700dp">700dp</dimen>
+    <dimen name="margin_720dp">720dp</dimen>
+    <dimen name="margin_800dp">800dp</dimen>
+
+
+</resources>
