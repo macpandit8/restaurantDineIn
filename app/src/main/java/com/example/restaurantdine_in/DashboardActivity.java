@@ -10,6 +10,7 @@ public class DashboardActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.AppTheme);
         setContentView(R.layout.activity_dashboard);
 
         mDashboardActivityListener = (DashboardFragment) getSupportFragmentManager().findFragmentById(R.id.dashboard_fragment);
