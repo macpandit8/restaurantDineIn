@@ -5,9 +5,75 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_black"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:weightSum="1"
     tools:context=".MenuActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:weightSum="1"
+        android:layout_weight="0.6">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.1">
+
+        <ListView
+            android:id="@+id/orderListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@color/white"
+            android:dividerHeight="@dimen/margin_1dp"
+            android:background="@color/background_black"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/top_border_background"
+            android:weightSum="1"
+            android:layout_weight="0.9"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/MENU_SCREEN_ORDERLIST_TEXTVIEW"
+                android:layout_weight="0.5"
+                android:textSize="@dimen/text_size_40sp"
+                android:layout_gravity="center_vertical"
+                android:textAlignment="center"
+                android:text="TOTAL"/>
+            <TextView
+                style="@style/MENU_SCREEN_ORDERLIST_TEXTVIEW"
+                android:gravity="right"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.3"
+                android:textAlignment="center"
+                android:textSize="@dimen/text_size_40sp"
+                android:paddingLeft="@dimen/margin_20dp"
+                android:text="$"/>
+            <TextView
+                android:id="@+id/invoiceTotal"
+                style="@style/MENU_SCREEN_ORDERLIST_TEXTVIEW"
+                android:layout_weight="0.2"
+                android:layout_gravity="center_vertical"
+                android:textSize="@dimen/text_size_40sp"
+                android:gravity="right"
+                android:text="100.00"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_weight="0.4">
 
     <LinearLayout
         style="@style/MENU_SCREEN_LINEAR_LAYOUT"
@@ -66,6 +132,8 @@
             style="@style/MENU_SCREEN_TEXTVIEW"
             android:text="Extras"
             android:visibility="invisible"/>
+
+    </LinearLayout>
 
     </LinearLayout>
 
