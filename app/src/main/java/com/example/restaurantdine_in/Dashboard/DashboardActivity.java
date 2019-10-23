@@ -1,7 +1,9 @@
-package com.example.restaurantdine_in;
+package com.example.restaurantdine_in.Dashboard;
 
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+
+import com.example.restaurantdine_in.BaseActivity;
+import com.example.restaurantdine_in.R;
 
 public class DashboardActivity extends BaseActivity {
 
