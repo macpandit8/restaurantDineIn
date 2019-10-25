@@ -33,6 +33,7 @@
             android:layout_weight="0.2">
 
         <ListView
+            android:id="@+id/foodItemsListView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:divider="@color/white"
@@ -48,11 +49,13 @@
             android:weightSum="1">
 
             <Button
+                android:id="@+id/cancelBtn"
                 style="@style/DIALOG_BUTTON_STYLE"
                 android:layout_weight="0.5"
                 android:text="@string/cancel_caps"/>
 
             <Button
+                android:id="@+id/addBtn"
                 style="@style/DIALOG_BUTTON_STYLE"
                 android:layout_weight="0.5"
                 android:text="@string/add_caps"/>

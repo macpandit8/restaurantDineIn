@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/dashboard_fragment"
-        android:name="com.example.restaurantdine_in.Dashboard.DashboardFragment"
+        android:name="com.example.restaurantdine_in.dashboard.DashboardFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

@@ -1,4 +1,4 @@
-package com.example.restaurantdine_in.Dashboard;
+package com.example.restaurantdine_in.dashboard;
 
 import android.widget.ImageView;
 

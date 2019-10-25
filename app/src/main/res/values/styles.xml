@@ -80,7 +80,7 @@
         <item name="android:textSize">@dimen/text_size_30sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:gravity">center</item>
-        <item name="android:layout_marginHorizontal">@dimen/margin_50dp</item>
+        <item name="android:layout_marginHorizontal">@dimen/margin_40dp</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_weight">1</item>

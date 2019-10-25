@@ -5,15 +5,22 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.restaurantdine_in.menu.OrderItemListAdapter;
+import com.example.restaurantdine_in.dialogs.FoodCategoryDialogFragment;
+import com.example.restaurantdine_in.menu.MenuCategory;
+import com.example.restaurantdine_in.adapters.OrderItemListAdapter;
 
 import java.util.ArrayList;
 
 public class MenuActivity extends BaseActivity implements View.OnClickListener{
 
     private OrderItemListAdapter orderItemListAdapter = null;
+
+    private TextView appetizersTextview, vegetarianTextview, chickenTextview, lambTextview, seaFoodTextview, breadsTextview, drinksTextview;
 
     ListView orderListView = null;
 
@@ -29,6 +36,33 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener{
         setContentView(R.layout.activity_menu);
 
         setupActionBar();
+
+        appetizersTextview = findViewById(R.id.appetizersTextview);
+        vegetarianTextview = findViewById(R.id.vegetarianTextview);
+        chickenTextview = findViewById(R.id.chickenTextview);
+        lambTextview = findViewById(R.id.lambTextview);
+        seaFoodTextview = findViewById(R.id.seaFoodTextview);
+        breadsTextview = findViewById(R.id.breadsTextview);
+        drinksTextview = findViewById(R.id.drinksTextview);
+
+        MenuCategory appetizers = new MenuCategory(appetizersTextview, Constants.APPETIZERS);
+        MenuCategory vegetarian = new MenuCategory(vegetarianTextview, Constants.VEGETARIAN);
+        MenuCategory chicken = new MenuCategory(chickenTextview, Constants.CHICKEN);
+        MenuCategory lamb = new MenuCategory(lambTextview, Constants.LAMB);
+        MenuCategory seaFood = new MenuCategory(seaFoodTextview, Constants.SEAFOOD);
+        MenuCategory breads = new MenuCategory(breadsTextview, Constants.BREADS);
+        MenuCategory drinks = new MenuCategory(drinksTextview, Constants.DRINKS);
+
+        ArrayList<MenuCategory> menuCategories = new ArrayList<>();
+        menuCategories.add(appetizers);
+        menuCategories.add(vegetarian);
+        menuCategories.add(chicken);
+        menuCategories.add(lamb);
+        menuCategories.add(seaFood);
+        menuCategories.add(breads);
+        menuCategories.add(drinks);
+
+        onClickListenerForMenuCategory(menuCategories);
 
         itemCount.add(5);
         itemCount.add(4);
@@ -85,7 +119,31 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener{
 
         orderItemListAdapter =new OrderItemListAdapter(this, itemCount, itemName, itemComment, itemAmount);
         orderListView.setAdapter(orderItemListAdapter);
+        orderListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if(i==0) {
+                    Toast.makeText(MenuActivity.this, "item clicked", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
+    }
+
+    private void onClickListenerForMenuCategory(final ArrayList<MenuCategory> menuCategories) {
+
+        for(final MenuCategory menuCategory : menuCategories) {
+            menuCategory.getMenuCategory().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    FoodCategoryDialogFragment foodCategoryDialogFragment = FoodCategoryDialogFragment.newInstance(MenuActivity.this, menuCategory.getCategoryName());
+                    foodCategoryDialogFragment.setCancelable(false);
+                    foodCategoryDialogFragment.show(getSupportFragmentManager(), menuCategory.getCategoryName());
+
+                }
+            });
+        }
     }
 
 

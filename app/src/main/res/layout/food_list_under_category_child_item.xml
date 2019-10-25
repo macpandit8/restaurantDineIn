@@ -11,13 +11,13 @@
         android:weightSum="1">
 
         <TextView
-            android:id="@+id/foodName"
+            android:id="@+id/foodNameTV"
             style="@style/MENU_SCREEN_ORDERLIST_TEXTVIEW"
             android:layout_weight="0.7"
             android:text="Chicken Pakora"/>
 
         <TextView
-            android:id="@+id/decreaseFoodCound"
+            android:id="@+id/decreaseFoodCountTV"
             style="@style/MENU_SCREEN_ORDERLIST_TEXTVIEW"
             android:layout_weight="0.1"
             android:layout_marginHorizontal="@dimen/margin_5dp"
@@ -25,17 +25,18 @@
             android:text="-"
             android:background="@drawable/round_shape"/>
 
-        <EditText
-            android:id="@+id/foodCount"
+        <TextView
+            android:id="@+id/foodCountTV"
             style="@style/MENU_SCREEN_ORDERLIST_TEXTVIEW"
             android:layout_weight="0.1"
             android:textAlignment="center"
             android:paddingHorizontal="@dimen/margin_10dp"
+            android:inputType="number"
             android:background="@drawable/all_border_background"
-            android:text="5"/>
+            android:text="0"/>
 
         <TextView
-            android:id="@+id/increaseFoodCound"
+            android:id="@+id/increaseFoodCountTV"
             style="@style/MENU_SCREEN_ORDERLIST_TEXTVIEW"
             android:layout_weight="0.1"
             android:layout_marginHorizontal="@dimen/margin_5dp"
