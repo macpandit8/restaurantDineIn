@@ -1,4 +1,4 @@
-package com.example.restaurantdine_in.menu;
+package com.example.restaurantdine_in.adapters;
 
 
 import android.content.Context;

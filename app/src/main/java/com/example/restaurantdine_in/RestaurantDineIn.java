@@ -3,10 +3,10 @@ package com.example.restaurantdine_in;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
+
+import com.example.restaurantdine_in.dashboard.DashboardActivity;
 
 public class RestaurantDineIn extends AppCompatActivity {
 

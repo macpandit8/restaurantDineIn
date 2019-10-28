@@ -38,12 +38,12 @@
                 android:id="@+id/resetButton"
                 style="@style/PRIMARY_BUTTON_STYLE"
                 android:layout_weight="0.5"
-                android:text="Reset"/>
+                android:text="@string/reset_all_caps"/>
             <Button
                 android:id="@+id/placeOrderButton"
                 style="@style/PRIMARY_BUTTON_STYLE"
                 android:layout_weight="0.5"
-                android:text="Place Order"/>
+                android:text="@string/place_order_all_caps"/>
 
         </LinearLayout>
     </LinearLayout>

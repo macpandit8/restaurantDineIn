@@ -1,13 +1,16 @@
 package com.example.restaurantdine_in;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
-import com.example.restaurantdine_in.menu.OrderItemListAdapter;
+import androidx.fragment.app.FragmentTransaction;
+
+import com.example.restaurantdine_in.menu.FoodCategorySelectionFragment;
+import com.example.restaurantdine_in.adapters.OrderItemListAdapter;
 
 import java.util.ArrayList;
 
@@ -29,6 +32,10 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener{
         setContentView(R.layout.activity_menu);
 
         setupActionBar();
+
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.add(R.id.foodItemSelectionFragmentContainer, new FoodCategorySelectionFragment());
+        fragmentTransaction.commit();
 
         itemCount.add(5);
         itemCount.add(4);
@@ -85,6 +92,14 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener{
 
         orderItemListAdapter =new OrderItemListAdapter(this, itemCount, itemName, itemComment, itemAmount);
         orderListView.setAdapter(orderItemListAdapter);
+        orderListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if(i==0) {
+                    Toast.makeText(MenuActivity.this, "item clicked", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
     }
 
@@ -127,29 +142,5 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener{
     @Override
     public void onClick(View view) {
 
-    }
-
-    public static class CustomScrollListener implements AbsListView.OnScrollListener {
-        private Activity mActivity;
-
-        public CustomScrollListener(Activity mContext) {
-            mActivity = mContext;
-        }
-
-        @Override
-        public void onScroll(AbsListView view, int firstVisibleItem,
-                             int visibleItemCount, int totalItemCount) {
-            // do nothing
-        }
-
-        @Override
-        public void onScrollStateChanged(AbsListView view, int scrollState) {
-            if (SCROLL_STATE_TOUCH_SCROLL == scrollState) {
-                View currentFocus = mActivity.getCurrentFocus();
-                if (currentFocus != null) {
-                    currentFocus.clearFocus();
-                }
-            }
-        }
     }
 }

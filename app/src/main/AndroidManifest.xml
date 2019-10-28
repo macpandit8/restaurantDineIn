@@ -14,7 +14,7 @@
         <activity android:name=".TempActivity" />
         <activity android:name=".BaseActivity" />
         <activity
-            android:name=".DashboardActivity"
+            android:name=".dashboard.DashboardActivity"
             android:screenOrientation="landscape" />
         <activity
             android:name=".RestaurantDineIn"
