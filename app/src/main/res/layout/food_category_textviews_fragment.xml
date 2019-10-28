@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+android:weightSum="1"
+android:layout_weight="0.4">
+
+<LinearLayout
+    style="@style/MENU_SCREEN_LINEAR_LAYOUT"
+    android:layout_weight="0.25">
+
+    <TextView
+        android:id="@+id/appetizersTextview"
+        style="@style/MENU_SCREEN_TEXTVIEW"
+        android:text="@string/appetizers"/>
+    <TextView
+        android:id="@+id/vegetarianTextview"
+        style="@style/MENU_SCREEN_TEXTVIEW"
+        android:text="@string/vegetarian"/>
+
+</LinearLayout>
+
+<LinearLayout
+    style="@style/MENU_SCREEN_LINEAR_LAYOUT"
+    android:layout_weight="0.25">
+
+    <TextView
+        android:id="@+id/chickenTextview"
+        style="@style/MENU_SCREEN_TEXTVIEW"
+        android:text="@string/chicken"/>
+    <TextView
+        android:id="@+id/lambTextview"
+        style="@style/MENU_SCREEN_TEXTVIEW"
+        android:text="@string/lamb"/>
+
+</LinearLayout>
+
+<LinearLayout
+    style="@style/MENU_SCREEN_LINEAR_LAYOUT"
+    android:layout_weight="0.25">
+
+    <TextView
+        android:id="@+id/seaFoodTextview"
+        style="@style/MENU_SCREEN_TEXTVIEW"
+        android:text="@string/seafood"/>
+    <TextView
+        android:id="@+id/breadsTextview"
+        style="@style/MENU_SCREEN_TEXTVIEW"
+        android:text="@string/breads"/>
+
+</LinearLayout>
+
+<LinearLayout
+    style="@style/MENU_SCREEN_LINEAR_LAYOUT"
+    android:layout_weight="0.25">
+
+    <TextView
+        android:id="@+id/drinksTextview"
+        style="@style/MENU_SCREEN_TEXTVIEW"
+        android:text="@string/drinks"/>
+    <TextView
+        style="@style/MENU_SCREEN_TEXTVIEW"
+        android:text="Extras"
+        android:visibility="invisible"/>
+
+</LinearLayout>
+
+</LinearLayout>

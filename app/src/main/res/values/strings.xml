@@ -22,6 +22,8 @@
 
     <string name="cancel_caps">CANCEL</string>
     <string name="add_caps">ADD</string>
+    <string name="done_caps">DONE</string>
+    <string name="enter_quantity">Enter Quantity</string>
     <string name="reset_all_caps">RESET</string>
     <string name="place_order_all_caps">PLACE ORDER</string>
 </resources>
