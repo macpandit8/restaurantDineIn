@@ -19,10 +19,10 @@ import com.example.restaurantdine_in.dialogs.EditTextDialogFragment;
 import java.util.ArrayList;
 
 public class FoodItemListViewAdapter extends ArrayAdapter {
-    Context mContext;
-    TextView foodNameTV, decreaseFoodCountTV, increaseFoodCountTV, foodCountTV;
-    ArrayList<String> foodNameList;
-    ArrayList<Integer> foodCountList;
+    private Context mContext;
+    private TextView foodNameTV, decreaseFoodCountTV, increaseFoodCountTV, foodCountTV;
+    private ArrayList<String> foodNameList;
+    private ArrayList<Integer> foodCountList;
 
     public FoodItemListViewAdapter(@NonNull Context context, ArrayList<String> foodNameList, ArrayList<Integer> foodCountList) {
         super(context, R.layout.food_list_under_category_child_item, R.id.foodNameTV, foodNameList);

@@ -27,9 +27,9 @@ public class EditTextDialogFragment extends DialogFragment {
     private static String mNegativeBtnText;
     private static boolean mFromOrderList;
 
-    TextView dialogTitleTV;
-    EditText dialogEditText;
-    Button cancelBtn, doneBtn;
+    private TextView dialogTitleTV;
+    private EditText dialogEditText;
+    private Button cancelBtn, doneBtn;
 
     public static EditTextDialogFragment newInstance(Context context, String dialogTitle, String positiveBtnText, String negativeBtnText, boolean fromOrderList) {
         mContext = context;
