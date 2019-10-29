@@ -1,5 +1,7 @@
 package com.example.restaurantdine_in;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -7,14 +9,18 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.restaurantdine_in.menu.FoodCategorySelectionFragment;
 import com.example.restaurantdine_in.adapters.OrderItemListAdapter;
+import com.example.restaurantdine_in.menu.FoodItemSelectionFragment;
+import com.example.restaurantdine_in.menu.IFoodItemSelectionFragmentListener;
+import com.example.restaurantdine_in.menu.IOnEditTextDialogListener;
 
 import java.util.ArrayList;
 
-public class MenuActivity extends BaseActivity implements View.OnClickListener{
+public class MenuActivity extends BaseActivity implements View.OnClickListener, IOnEditTextDialogListener {
 
     private OrderItemListAdapter orderItemListAdapter = null;
 
@@ -24,6 +30,10 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener{
     ArrayList<String> itemName = new ArrayList<>();
     ArrayList<String> itemComment = new ArrayList<>();
     ArrayList<Double> itemAmount = new ArrayList<>();
+
+    private IFoodItemSelectionFragmentListener foodItemSelectionFragmentListener;
+
+    FoodItemSelectionFragment foodItemSelectionFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,5 +152,23 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener{
     @Override
     public void onClick(View view) {
 
+    }
+
+    @Override
+    public void onDoneClicked(Context context, int position, String aText, Fragment fragment, boolean fromOrderItemList) {
+        if(fromOrderItemList) {
+
+        } else {
+//            foodItemSelectionFragmentListener.setFoodQty(aText);
+            onAttachFragment(fragment);
+            foodItemSelectionFragment.setFoodQty(position, aText);
+        }
+    }
+
+    @Override
+    public void onAttachFragment(Fragment fragment) {
+        if (fragment instanceof FoodItemSelectionFragment) {
+            foodItemSelectionFragment = (FoodItemSelectionFragment) fragment;
+        }
     }
 }
