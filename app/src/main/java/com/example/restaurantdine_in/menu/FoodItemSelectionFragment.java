@@ -1,5 +1,6 @@
 package com.example.restaurantdine_in.menu;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.restaurantdine_in.R;
 import com.example.restaurantdine_in.adapters.FoodItemListViewAdapter;
@@ -23,6 +25,8 @@ public class FoodItemSelectionFragment extends Fragment implements View.OnClickL
 
     private FoodItemListViewAdapter foodItemListViewAdapter;
 
+    private Context mContext;
+
     ArrayList<String> foodNameList = new ArrayList<>();
     ArrayList<Integer> foodCountList = new ArrayList<>();
 
@@ -30,6 +34,7 @@ public class FoodItemSelectionFragment extends Fragment implements View.OnClickL
     ListView foodItemsListView;
     Button cancelBtn, addBtn;
 
+    FragmentTransaction fragmentTransaction;
 
     @Nullable
     @Override
@@ -37,10 +42,14 @@ public class FoodItemSelectionFragment extends Fragment implements View.OnClickL
 
         View foodItemSelectionView = inflater.inflate(R.layout.food_list_by_category_fragment, container, false);
 
+        mContext = getActivity();
+
         foodItemsListView = foodItemSelectionView.findViewById(R.id.foodItemsListView);
         selectedCategoryTitle = foodItemSelectionView.findViewById(R.id.selectedCategoryTitle);
         cancelBtn = foodItemSelectionView.findViewById(R.id.cancelBtn);
+        cancelBtn.setOnClickListener(this);
         addBtn = foodItemSelectionView.findViewById(R.id.addBtn);
+        addBtn.setOnClickListener(this);
 
         selectedCategoryTitle.setText(getTag());
 
@@ -56,7 +65,7 @@ public class FoodItemSelectionFragment extends Fragment implements View.OnClickL
         foodCountList.add(4);
         foodCountList.add(5);
 
-        foodItemListViewAdapter = new FoodItemListViewAdapter(getContext(), foodNameList, foodCountList);
+        foodItemListViewAdapter = new FoodItemListViewAdapter(mContext, foodNameList, foodCountList);
         foodItemsListView.setAdapter(foodItemListViewAdapter);
         foodItemsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -78,7 +87,9 @@ public class FoodItemSelectionFragment extends Fragment implements View.OnClickL
                 Toast.makeText(getActivity(), "add button clicked", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.cancelBtn :
-                Toast.makeText(getActivity(), "Cancel button clicked", Toast.LENGTH_SHORT).show();
+                fragmentTransaction = getFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.foodItemSelectionFragmentContainer, new FoodCategorySelectionFragment());
+                fragmentTransaction.commit();
                 break;
         }
     }
