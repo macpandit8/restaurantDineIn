@@ -73,7 +73,7 @@ public class FoodItemListViewAdapter extends ArrayAdapter {
                 if(foodCountList.get(position) != 0) {
                     count = foodCountList.get(position) - 1;
                     foodCountList.set(position, count);
-                    foodCountTV.setText(String.valueOf(count));
+                    notifyDataSetChanged();
                 }
             }
         });
@@ -84,7 +84,7 @@ public class FoodItemListViewAdapter extends ArrayAdapter {
                 int count;
                 count = foodCountList.get(position) + 1;
                 foodCountList.set(position, count);
-                foodCountTV.setText(String.valueOf(count));
+                notifyDataSetChanged();
             }
         });
 
@@ -93,7 +93,6 @@ public class FoodItemListViewAdapter extends ArrayAdapter {
 
     public void setFoodQty(int position, String foodQty) {
         foodCountList.set(position, Integer.parseInt(foodQty));
-        getItem(position);
-        foodCountTV.setText(foodQty);
+        notifyDataSetChanged();
     }
 }

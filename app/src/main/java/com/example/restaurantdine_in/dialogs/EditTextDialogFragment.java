@@ -91,7 +91,6 @@ public class EditTextDialogFragment extends DialogFragment {
             public void onClick(View view) {
                 iOnEditTextDialogListener.onDoneClicked(mContext, mPosition, dialogEditText.getText().toString(), mFragment, false);
                 getDialog().dismiss();
-                Toast.makeText(mContext, "Done button clicked", Toast.LENGTH_SHORT).show();
             }
         });
 
