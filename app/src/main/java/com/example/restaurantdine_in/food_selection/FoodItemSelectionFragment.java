@@ -1,4 +1,4 @@
-package com.example.restaurantdine_in.menu;
+package com.example.restaurantdine_in.food_selection;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -16,8 +16,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.restaurantdine_in.Constants;
 import com.example.restaurantdine_in.R;
 import com.example.restaurantdine_in.adapters.FoodItemListViewAdapter;
+import com.example.restaurantdine_in.menu.Appetizers;
 
 import java.util.ArrayList;
 
@@ -26,7 +28,6 @@ public class FoodItemSelectionFragment extends Fragment implements View.OnClickL
     private FoodItemListViewAdapter foodItemListViewAdapter;
 
     private Context mContext;
-
     ArrayList<String> foodNameList = new ArrayList<>();
     ArrayList<Integer> foodCountList = new ArrayList<>();
 
@@ -54,19 +55,27 @@ public class FoodItemSelectionFragment extends Fragment implements View.OnClickL
         addBtn = foodItemSelectionView.findViewById(R.id.addBtn);
         addBtn.setOnClickListener(this);
 
-        selectedCategoryTitle.setText(getTag());
+        if(getTag().equals(Constants.APPETIZERS)) {
+            selectedCategoryTitle.setText(getResources().getString(R.string.appetizers));
+            foodNameList = Appetizers.getItemNamesFromFoodItemList(Appetizers.getAppetizersList());
+            for(int i = 0; i < foodNameList.size(); i++) {
+                foodCountList.add(0);
+            }
+        }
 
-        foodNameList.add("item1");
-        foodNameList.add("item2");
-        foodNameList.add("item3");
-        foodNameList.add("item4");
-        foodNameList.add("item5");
 
-        foodCountList.add(1);
-        foodCountList.add(2);
-        foodCountList.add(3);
-        foodCountList.add(4);
-        foodCountList.add(5);
+
+//        foodNameList.add("item1");
+//        foodNameList.add("item2");
+//        foodNameList.add("item3");
+//        foodNameList.add("item4");
+//        foodNameList.add("item5");
+//
+//        foodCountList.add(1);
+//        foodCountList.add(2);
+//        foodCountList.add(3);
+//        foodCountList.add(4);
+//        foodCountList.add(5);
 
         foodItemListViewAdapter = new FoodItemListViewAdapter(mContext, foodNameList, foodCountList, fragment);
         foodItemsListView.setAdapter(foodItemListViewAdapter);

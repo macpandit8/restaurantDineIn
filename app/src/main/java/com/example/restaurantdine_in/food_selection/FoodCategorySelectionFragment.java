@@ -1,4 +1,4 @@
-package com.example.restaurantdine_in.menu;
+package com.example.restaurantdine_in.food_selection;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

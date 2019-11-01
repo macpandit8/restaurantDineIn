@@ -1,6 +1,5 @@
 package com.example.restaurantdine_in;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,11 +11,12 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.restaurantdine_in.menu.FoodCategorySelectionFragment;
+import com.example.restaurantdine_in.food_selection.FoodCategorySelectionFragment;
 import com.example.restaurantdine_in.adapters.OrderItemListAdapter;
-import com.example.restaurantdine_in.menu.FoodItemSelectionFragment;
-import com.example.restaurantdine_in.menu.IFoodItemSelectionFragmentListener;
-import com.example.restaurantdine_in.menu.IOnEditTextDialogListener;
+import com.example.restaurantdine_in.food_selection.FoodItemSelectionFragment;
+import com.example.restaurantdine_in.food_selection.IFoodItemSelectionFragmentListener;
+import com.example.restaurantdine_in.food_selection.IOnEditTextDialogListener;
+import com.example.restaurantdine_in.menu.Appetizers;
 
 import java.util.ArrayList;
 
