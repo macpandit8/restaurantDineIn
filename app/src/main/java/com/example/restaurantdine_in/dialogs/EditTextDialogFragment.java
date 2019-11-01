@@ -15,9 +15,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 
 import com.example.restaurantdine_in.MenuActivity;
 import com.example.restaurantdine_in.R;
+import com.example.restaurantdine_in.adapters.FoodItemListViewAdapter;
+import com.example.restaurantdine_in.menu.IOnEditTextDialogListener;
 
 public class EditTextDialogFragment extends DialogFragment {
 
@@ -26,17 +29,25 @@ public class EditTextDialogFragment extends DialogFragment {
     private static String mPositiveBtnText;
     private static String mNegativeBtnText;
     private static boolean mFromOrderList;
+    private static int mPosition;
 
     private TextView dialogTitleTV;
     private EditText dialogEditText;
     private Button cancelBtn, doneBtn;
 
-    public static EditTextDialogFragment newInstance(Context context, String dialogTitle, String positiveBtnText, String negativeBtnText, boolean fromOrderList) {
+    private static Fragment mFragment;
+
+    IOnEditTextDialogListener iOnEditTextDialogListener;
+    private FoodItemListViewAdapter foodItemListViewAdapter;
+
+    public static EditTextDialogFragment newInstance(Context context, int position, String dialogTitle, String positiveBtnText, String negativeBtnText, Fragment fragment, boolean fromOrderList) {
         mContext = context;
         mDialogTitle = dialogTitle;
         mPositiveBtnText = positiveBtnText;
         mNegativeBtnText = negativeBtnText;
         mFromOrderList = fromOrderList;
+        mFragment = fragment;
+        mPosition = position;
         EditTextDialogFragment editTextDialogFragment = new EditTextDialogFragment();
 
         return editTextDialogFragment;
@@ -48,12 +59,13 @@ public class EditTextDialogFragment extends DialogFragment {
 
         View rootView = inflater.inflate(R.layout.edit_text_dialog_layout, container, false);
 
+        iOnEditTextDialogListener = (IOnEditTextDialogListener) mContext;
+
         dialogTitleTV = rootView.findViewById(R.id.dialogTitleTV);
         dialogTitleTV.setText(mDialogTitle);
 
         dialogEditText = rootView.findViewById(R.id.dialogEditText);
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        getDialog().getWindow().setNavigationBarColor(getResources().getColor(R.color.background_black));
 
         if(mFromOrderList) {
             dialogEditText.setInputType(InputType.TYPE_CLASS_TEXT);
@@ -77,7 +89,8 @@ public class EditTextDialogFragment extends DialogFragment {
         doneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(mContext, "Done button clicked", Toast.LENGTH_SHORT).show();
+                iOnEditTextDialogListener.onDoneClicked(mContext, mPosition, dialogEditText.getText().toString(), mFragment, false);
+                getDialog().dismiss();
             }
         });
 

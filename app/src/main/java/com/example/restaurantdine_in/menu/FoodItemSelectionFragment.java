@@ -21,7 +21,7 @@ import com.example.restaurantdine_in.adapters.FoodItemListViewAdapter;
 
 import java.util.ArrayList;
 
-public class FoodItemSelectionFragment extends Fragment implements View.OnClickListener{
+public class FoodItemSelectionFragment extends Fragment implements View.OnClickListener {
 
     private FoodItemListViewAdapter foodItemListViewAdapter;
 
@@ -36,13 +36,16 @@ public class FoodItemSelectionFragment extends Fragment implements View.OnClickL
 
     FragmentTransaction fragmentTransaction;
 
+    private IFoodItemFragmentAdapterInteractor foodItemFragmentAdapterInteractor;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View foodItemSelectionView = inflater.inflate(R.layout.food_list_by_category_fragment, container, false);
 
-        mContext = getActivity();
+        mContext = getContext();
+        Fragment fragment = this;
 
         foodItemsListView = foodItemSelectionView.findViewById(R.id.foodItemsListView);
         selectedCategoryTitle = foodItemSelectionView.findViewById(R.id.selectedCategoryTitle);
@@ -65,7 +68,7 @@ public class FoodItemSelectionFragment extends Fragment implements View.OnClickL
         foodCountList.add(4);
         foodCountList.add(5);
 
-        foodItemListViewAdapter = new FoodItemListViewAdapter(mContext, foodNameList, foodCountList);
+        foodItemListViewAdapter = new FoodItemListViewAdapter(mContext, foodNameList, foodCountList, fragment);
         foodItemsListView.setAdapter(foodItemListViewAdapter);
         foodItemsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -92,5 +95,11 @@ public class FoodItemSelectionFragment extends Fragment implements View.OnClickL
                 fragmentTransaction.commit();
                 break;
         }
+    }
+
+
+
+    public void setFoodQty(int position, String foodQty) {
+        foodItemListViewAdapter.setFoodQty(position, foodQty);
     }
 }

@@ -5,12 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
 import com.example.restaurantdine_in.R;
@@ -23,12 +22,15 @@ public class FoodItemListViewAdapter extends ArrayAdapter {
     private TextView foodNameTV, decreaseFoodCountTV, increaseFoodCountTV, foodCountTV;
     private ArrayList<String> foodNameList;
     private ArrayList<Integer> foodCountList;
+    private int mPosition;
+    private Fragment mFragment;
 
-    public FoodItemListViewAdapter(@NonNull Context context, ArrayList<String> foodNameList, ArrayList<Integer> foodCountList) {
+    public FoodItemListViewAdapter(@NonNull Context context, ArrayList<String> foodNameList, ArrayList<Integer> foodCountList, Fragment fragment) {
         super(context, R.layout.food_list_under_category_child_item, R.id.foodNameTV, foodNameList);
         this.mContext = context;
         this.foodNameList = foodNameList;
         this.foodCountList = foodCountList;
+        this.mFragment = fragment;
     }
 
     @NonNull
@@ -37,6 +39,8 @@ public class FoodItemListViewAdapter extends ArrayAdapter {
 
         LayoutInflater layoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View adapterView = layoutInflater.inflate(R.layout.food_list_under_category_child_item, parent, false);
+
+        mPosition = position;
 
         foodNameTV = adapterView.findViewById(R.id.foodNameTV);
         foodCountTV = adapterView.findViewById(R.id.foodCountTV);
@@ -55,8 +59,8 @@ public class FoodItemListViewAdapter extends ArrayAdapter {
         foodCountTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditTextDialogFragment editTextDialogFragment = EditTextDialogFragment.newInstance(mContext, foodNameList.get(position),
-                        mContext.getString(R.string.done_caps), mContext.getString(R.string.cancel_caps), false);
+                EditTextDialogFragment editTextDialogFragment = EditTextDialogFragment.newInstance(mContext, position, foodNameList.get(position),
+                        mContext.getString(R.string.done_caps), mContext.getString(R.string.cancel_caps), mFragment, false);
                 editTextDialogFragment.setCancelable(false);
                 editTextDialogFragment.show(((FragmentActivity)mContext).getSupportFragmentManager(), foodNameList.get(position));
             }
@@ -69,7 +73,7 @@ public class FoodItemListViewAdapter extends ArrayAdapter {
                 if(foodCountList.get(position) != 0) {
                     count = foodCountList.get(position) - 1;
                     foodCountList.set(position, count);
-                    foodCountTV.setText(String.valueOf(count));
+                    notifyDataSetChanged();
                 }
             }
         });
@@ -80,9 +84,15 @@ public class FoodItemListViewAdapter extends ArrayAdapter {
                 int count;
                 count = foodCountList.get(position) + 1;
                 foodCountList.set(position, count);
-                foodCountTV.setText(String.valueOf(count));
+                notifyDataSetChanged();
             }
         });
 
+    }
+
+
+    public void setFoodQty(int position, String foodQty) {
+        foodCountList.set(position, Integer.parseInt(foodQty));
+        notifyDataSetChanged();
     }
 }
