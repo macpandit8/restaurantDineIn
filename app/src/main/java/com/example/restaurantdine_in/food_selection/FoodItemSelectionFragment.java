@@ -19,7 +19,13 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.restaurantdine_in.Constants;
 import com.example.restaurantdine_in.R;
 import com.example.restaurantdine_in.adapters.FoodItemListViewAdapter;
-import com.example.restaurantdine_in.menu.Appetizers;
+import com.example.restaurantdine_in.menu.AppetizersCategory;
+import com.example.restaurantdine_in.menu.BreadsCategory;
+import com.example.restaurantdine_in.menu.ChickenCategory;
+import com.example.restaurantdine_in.menu.DrinksCategory;
+import com.example.restaurantdine_in.menu.LambCategory;
+import com.example.restaurantdine_in.menu.SeaFoodCategory;
+import com.example.restaurantdine_in.menu.VegetarianCategory;
 
 import java.util.ArrayList;
 
@@ -30,7 +36,7 @@ public class FoodItemSelectionFragment extends Fragment implements View.OnClickL
     private Context mContext;
     ArrayList<String> foodNameList = new ArrayList<>();
     ArrayList<Integer> foodCountList = new ArrayList<>();
-
+    String selectedFoodCategory;
     TextView selectedCategoryTitle;
     ListView foodItemsListView;
     Button cancelBtn, addBtn;
@@ -47,7 +53,7 @@ public class FoodItemSelectionFragment extends Fragment implements View.OnClickL
 
         mContext = getContext();
         Fragment fragment = this;
-
+        selectedFoodCategory = getTag();
         foodItemsListView = foodItemSelectionView.findViewById(R.id.foodItemsListView);
         selectedCategoryTitle = foodItemSelectionView.findViewById(R.id.selectedCategoryTitle);
         cancelBtn = foodItemSelectionView.findViewById(R.id.cancelBtn);
@@ -55,27 +61,10 @@ public class FoodItemSelectionFragment extends Fragment implements View.OnClickL
         addBtn = foodItemSelectionView.findViewById(R.id.addBtn);
         addBtn.setOnClickListener(this);
 
-        if(getTag().equals(Constants.APPETIZERS)) {
-            selectedCategoryTitle.setText(getResources().getString(R.string.appetizers));
-            foodNameList = Appetizers.getItemNamesFromFoodItemList(Appetizers.getAppetizersList());
-            for(int i = 0; i < foodNameList.size(); i++) {
-                foodCountList.add(0);
-            }
+        extractFoodListForCategory(selectedFoodCategory);
+        for(int i = 0; i < foodNameList.size(); i++) {
+            foodCountList.add(0);
         }
-
-
-
-//        foodNameList.add("item1");
-//        foodNameList.add("item2");
-//        foodNameList.add("item3");
-//        foodNameList.add("item4");
-//        foodNameList.add("item5");
-//
-//        foodCountList.add(1);
-//        foodCountList.add(2);
-//        foodCountList.add(3);
-//        foodCountList.add(4);
-//        foodCountList.add(5);
 
         foodItemListViewAdapter = new FoodItemListViewAdapter(mContext, foodNameList, foodCountList, fragment);
         foodItemsListView.setAdapter(foodItemListViewAdapter);
@@ -90,6 +79,40 @@ public class FoodItemSelectionFragment extends Fragment implements View.OnClickL
 
 
         return foodItemSelectionView;
+    }
+
+    private void extractFoodListForCategory(String selectedFoodCategory) {
+
+        switch (selectedFoodCategory) {
+            case Constants.APPETIZERS :
+                selectedCategoryTitle.setText(getResources().getString(R.string.appetizers));
+                foodNameList = AppetizersCategory.getItemNamesFromFoodItemList(AppetizersCategory.getAppetizersList());
+                break;
+            case Constants.VEGETARIAN :
+                selectedCategoryTitle.setText(getResources().getString(R.string.vegetarian));
+                foodNameList = VegetarianCategory.getItemNamesFromFoodItemList(VegetarianCategory.getVegetarianCategoryList());
+                break;
+            case Constants.CHICKEN :
+                selectedCategoryTitle.setText(getResources().getString(R.string.chicken));
+                foodNameList = ChickenCategory.getItemNamesFromFoodItemList(ChickenCategory.getChickenCategoryList());
+                break;
+            case Constants.LAMB :
+                selectedCategoryTitle.setText(getResources().getString(R.string.lamb));
+                foodNameList = LambCategory.getItemNamesFromFoodItemList(LambCategory.getLambCategoryList());
+                break;
+            case Constants.SEAFOOD :
+                selectedCategoryTitle.setText(getResources().getString(R.string.seafood));
+                foodNameList = SeaFoodCategory.getItemNamesFromFoodItemList(SeaFoodCategory.getSeaFoodCategoryList());
+                break;
+            case Constants.BREADS :
+                selectedCategoryTitle.setText(getResources().getString(R.string.breads));
+                foodNameList = BreadsCategory.getItemNamesFromFoodItemList(BreadsCategory.getBreadsCategoryList());
+                break;
+            case Constants.DRINKS :
+                selectedCategoryTitle.setText(getResources().getString(R.string.drinks));
+                foodNameList = DrinksCategory.getItemNamesFromFoodItemList(DrinksCategory.getDrinksCategoryList());
+                break;
+        }
     }
 
     @Override

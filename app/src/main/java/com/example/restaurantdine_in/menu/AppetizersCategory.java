@@ -4,7 +4,7 @@ import com.example.restaurantdine_in.Constants;
 
 import java.util.ArrayList;
 
-public class Appetizers extends FoodCategory{
+public class AppetizersCategory extends FoodCategory{
 
     private static ArrayList<FoodItem> appetizersList = new ArrayList<>();
 

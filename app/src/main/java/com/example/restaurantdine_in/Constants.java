@@ -23,10 +23,11 @@ public class Constants {
     public static final String BREADS = "breads";
     public static final String DRINKS = "drinks";
 
+
     /**
      * Food Items
      */
-
+//    Appetizers
     public static final String DAAL_SOUP = "Daal Soup";
     public static final String MALCATANI_SOUP = "Malcatani Soup";
     public static final String SAMBAR_SOUP = "Sambar Soup";
@@ -45,5 +46,20 @@ public class Constants {
     public static final String CHICKEN_PAKORA = "Chicken Pakora";
     public static final String FISH_PAKORA = "Fish Pakora";
 
+//    Vegetarian
+    public static final String MIX_VEG = "Mixed Vegetable";
+    public static final String PALAK_PANEER = "Palak Paneer";
+    public static final String SHAHI_PANEER = "Shahi Paneer";
+    public static final String MUTTER_PANEER = "Mutter Paneer";
+    public static final String BAINGAN_BHARTA = "Baingan Bharta";
+    public static final String ALOO_GOBI = "Aloo Gobi";
+    public static final String VEG_KORMA = "Veg Korma";
+    public static final String MALAI_KOFTA = "Malai Kofta";
+    public static final String CHANA_MASALA = "Chana Masala";
+    public static final String DAAL_MAKHNI = "Daal Makhni";
+    public static final String TADKA_DAAL = "Tadka Daal";
+    public static final String BHINDI_MASALA = "Bhindi Masala";
+    public static final String CHILLI_PANEER = "Chilli Paneer";
+    public static final String VEG_JALFRAIZI = "Veg Jalfraizi";
 
 }

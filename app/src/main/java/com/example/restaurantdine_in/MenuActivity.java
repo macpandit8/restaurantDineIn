@@ -16,7 +16,6 @@ import com.example.restaurantdine_in.adapters.OrderItemListAdapter;
 import com.example.restaurantdine_in.food_selection.FoodItemSelectionFragment;
 import com.example.restaurantdine_in.food_selection.IFoodItemSelectionFragmentListener;
 import com.example.restaurantdine_in.food_selection.IOnEditTextDialogListener;
-import com.example.restaurantdine_in.menu.Appetizers;
 
 import java.util.ArrayList;
 
