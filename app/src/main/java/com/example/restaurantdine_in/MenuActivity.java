@@ -59,6 +59,23 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener, 
 
         orderItemListAdapter =new OrderItemListAdapter(this, foodItemCountList, foodItemNameList, foodItemCommentList, foodItemPriceList);
         orderListView.setAdapter(orderItemListAdapter);
+        orderListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, final int position, long l) {
+                DialogBoxHelper.showDialog(MenuActivity.this, getString(R.string.delete_caps), getString(R.string.cancel_caps), getString(R.string.msg_do_you_want_to_delete),
+                        true, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                foodItemCountList.remove(position);
+                                foodItemCommentList.remove(position);
+                                foodItemNameList.remove(position);
+                                foodItemPriceList.remove(position);
+                                notifyDataSetChangedAndCalculateTotalBill();
+                            }
+                        }, null).show();
+                return false;
+            }
+        });
         orderListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -106,9 +123,7 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener, 
                     public void onClick(View view) {    //Reset Button
                         if(!foodItemCountList.isEmpty() && !foodItemNameList.isEmpty() && !foodItemCommentList.isEmpty() && !foodItemPriceList.isEmpty()) {
                             clearOrderLists();
-                            orderItemListAdapter.notifyDataSetChanged();
-                            totalBill = 0.00;
-                            invoiceTotalTV.setText(String.valueOf(totalBill));
+                            notifyDataSetChangedAndCalculateTotalBill();
                         }
                     }
                 },
@@ -136,13 +151,15 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener, 
     /**
      * Call this method whenever item is added/removed from the Order
      */
-    private void calculateTotalBill() {
+    private void notifyDataSetChangedAndCalculateTotalBill() {
+        orderItemListAdapter.notifyDataSetChanged();
+        totalBill = 0.00;
         if(!foodItemPriceList.isEmpty()) {
             for (double itemPrice : foodItemPriceList) {
                 totalBill = totalBill + itemPrice;
             }
-            invoiceTotalTV.setText(String.valueOf(totalBill));
         }
+        invoiceTotalTV.setText(String.valueOf(totalBill));
     }
 
     @Override
@@ -180,8 +197,6 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener, 
                 foodItemCommentList.add("");
             }
         }
-        orderItemListAdapter.notifyDataSetChanged();
-        totalBill = 0.00;
-        calculateTotalBill();
+        notifyDataSetChangedAndCalculateTotalBill();
     }
 }
