@@ -8,7 +8,7 @@ public class AppetizersCategory extends FoodCategory{
 
     private static ArrayList<FoodItem> appetizersList = new ArrayList<>();
 
-    final static FoodItem daalSoup = new FoodItem(Constants.DAAL_SOUP, 3.50);
+    public final static FoodItem daalSoup = new FoodItem(Constants.DAAL_SOUP, 3.50);
     final static FoodItem malcataniSoup = new FoodItem(Constants.MALCATANI_SOUP, 4.00);
     final static FoodItem sambarSoup = new FoodItem(Constants.SAMBAR_SOUP, 4.00);
     final static FoodItem vegSamosa = new FoodItem(Constants.VEG_SAMOSA, 3.50);
