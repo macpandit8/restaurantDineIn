@@ -1,6 +1,5 @@
-package com.example.restaurantdine_in.menu;
+package com.example.restaurantdine_in.food_selection;
 
-import android.app.Dialog;
 import android.content.Context;
 
 import androidx.fragment.app.Fragment;

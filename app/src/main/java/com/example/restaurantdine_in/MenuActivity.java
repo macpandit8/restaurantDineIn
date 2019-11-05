@@ -1,39 +1,45 @@
 package com.example.restaurantdine_in;
 
-import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.restaurantdine_in.menu.FoodCategorySelectionFragment;
+import com.example.restaurantdine_in.dialogs.DialogBoxHelper;
+import com.example.restaurantdine_in.food_selection.FoodCategorySelectionFragment;
 import com.example.restaurantdine_in.adapters.OrderItemListAdapter;
-import com.example.restaurantdine_in.menu.FoodItemSelectionFragment;
-import com.example.restaurantdine_in.menu.IFoodItemSelectionFragmentListener;
-import com.example.restaurantdine_in.menu.IOnEditTextDialogListener;
+import com.example.restaurantdine_in.food_selection.FoodItemSelectionFragment;
+import com.example.restaurantdine_in.food_selection.IAddItemsToOrderListener;
+import com.example.restaurantdine_in.food_selection.IFoodItemSelectionFragmentListener;
+import com.example.restaurantdine_in.food_selection.IOnEditTextDialogListener;
 
 import java.util.ArrayList;
 
-public class MenuActivity extends BaseActivity implements View.OnClickListener, IOnEditTextDialogListener {
+public class MenuActivity extends BaseActivity implements View.OnClickListener, IOnEditTextDialogListener, IAddItemsToOrderListener {
 
     private OrderItemListAdapter orderItemListAdapter = null;
 
     ListView orderListView = null;
+    TextView invoiceTotalTV = null;
 
-    ArrayList<Integer> itemCount = new ArrayList<>();
-    ArrayList<String> itemName = new ArrayList<>();
-    ArrayList<String> itemComment = new ArrayList<>();
-    ArrayList<Double> itemAmount = new ArrayList<>();
+    ArrayList<Integer> foodItemCountList = new ArrayList<>();
+    ArrayList<String> foodItemNameList = new ArrayList<>();
+    ArrayList<String> foodItemCommentList = new ArrayList<>();
+    ArrayList<Double> foodItemPriceList = new ArrayList<>();
 
     private IFoodItemSelectionFragmentListener foodItemSelectionFragmentListener;
 
     FoodItemSelectionFragment foodItemSelectionFragment;
+
+    double totalBill = 0.00;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,60 +53,11 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener, 
         fragmentTransaction.add(R.id.foodItemSelectionFragmentContainer, new FoodCategorySelectionFragment());
         fragmentTransaction.commit();
 
-        itemCount.add(5);
-        itemCount.add(4);
-        itemCount.add(5);
-        itemCount.add(5);
-        itemCount.add(5);
-        itemCount.add(5);
-        itemCount.add(5);
-        itemCount.add(5);
-        itemCount.add(5);
-        itemCount.add(5);
-        itemCount.add(5);
-        itemCount.add(5);
-
-        itemName.add("Item");
-        itemName.add("Item");
-        itemName.add("Item");
-        itemName.add("Item");
-        itemName.add("Item");
-        itemName.add("Item");
-        itemName.add("Item");
-        itemName.add("Item");
-        itemName.add("Item");
-        itemName.add("Item");
-        itemName.add("Item");
-
-        itemComment.add("Any Comment");
-        itemComment.add("Any Comment");
-        itemComment.add("Any Comment");
-        itemComment.add("Any Comment");
-        itemComment.add("Any Comment");
-        itemComment.add("Any Comment");
-        itemComment.add("Any Comment");
-        itemComment.add("Any Comment");
-        itemComment.add("Any Comment");
-        itemComment.add("Any Comment");
-        itemComment.add("Any Comment");
-        itemComment.add("Any Comment");
-
-        itemAmount.add(25.50);
-        itemAmount.add(25.55);
-        itemAmount.add(25.50);
-        itemAmount.add(25.50);
-        itemAmount.add(25.50);
-        itemAmount.add(25.50);
-        itemAmount.add(25.50);
-        itemAmount.add(25.50);
-        itemAmount.add(25.50);
-        itemAmount.add(25.50);
-        itemAmount.add(25.50);
-        itemAmount.add(25.50);
-
+        invoiceTotalTV = findViewById(R.id.invoiceTotalTV);
+        invoiceTotalTV.setText(String.valueOf(totalBill));
         orderListView = (ListView) findViewById(R.id.orderListView);
 
-        orderItemListAdapter =new OrderItemListAdapter(this, itemCount, itemName, itemComment, itemAmount);
+        orderItemListAdapter =new OrderItemListAdapter(this, foodItemCountList, foodItemNameList, foodItemCommentList, foodItemPriceList);
         orderListView.setAdapter(orderItemListAdapter);
         orderListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -128,7 +85,18 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener, 
 
                     @Override
                     public void onClick(View view) {    //Back Button
-                        finish();
+                        if(foodItemCountList.isEmpty() && foodItemNameList.isEmpty() && foodItemCommentList.isEmpty() && foodItemPriceList.isEmpty()) {
+                            finish();
+                        } else {
+                            DialogBoxHelper.showDialog(MenuActivity.this, getString(R.string.yes_caps), getString(R.string.no_caps), getString(R.string.msg_discard_changes_go_back)
+                                    , true, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    clearOrderLists();
+                                    finish();
+                                }
+                            }, null).show();
+                        }
                     }
                 },
 
@@ -136,7 +104,12 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener, 
 
                     @Override
                     public void onClick(View view) {    //Reset Button
-                        Log.i("mayank", "reset clicked");
+                        if(!foodItemCountList.isEmpty() && !foodItemNameList.isEmpty() && !foodItemCommentList.isEmpty() && !foodItemPriceList.isEmpty()) {
+                            clearOrderLists();
+                            orderItemListAdapter.notifyDataSetChanged();
+                            totalBill = 0.00;
+                            invoiceTotalTV.setText(String.valueOf(totalBill));
+                        }
                     }
                 },
 
@@ -147,6 +120,29 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener, 
                         Log.i("mayank", "place order clicked");
                     }
                 });
+    }
+
+    /**
+     * Call this method when you want to clear whole order
+     * and reset all lists
+     */
+    private void clearOrderLists() {
+        foodItemCountList.clear();
+        foodItemNameList.clear();
+        foodItemCommentList.clear();
+        foodItemPriceList.clear();
+    }
+
+    /**
+     * Call this method whenever item is added/removed from the Order
+     */
+    private void calculateTotalBill() {
+        if(!foodItemPriceList.isEmpty()) {
+            for (double itemPrice : foodItemPriceList) {
+                totalBill = totalBill + itemPrice;
+            }
+            invoiceTotalTV.setText(String.valueOf(totalBill));
+        }
     }
 
     @Override
@@ -170,5 +166,22 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener, 
         if (fragment instanceof FoodItemSelectionFragment) {
             foodItemSelectionFragment = (FoodItemSelectionFragment) fragment;
         }
+    }
+
+    @Override
+    public void setOrderList(ArrayList<Integer> foodCountList, ArrayList<String> foodNamesList, ArrayList<Double> foodItemPriceList) {
+        if (foodCountList.size() == foodNamesList.size() && foodNamesList.size() == foodItemPriceList.size()) {
+
+            this.foodItemCountList.addAll(foodCountList);
+            this.foodItemNameList.addAll(foodNamesList);
+            this.foodItemPriceList.addAll(foodItemPriceList);
+
+            for(int i = 0; i < foodCountList.size(); i++) {
+                foodItemCommentList.add("");
+            }
+        }
+        orderItemListAdapter.notifyDataSetChanged();
+        totalBill = 0.00;
+        calculateTotalBill();
     }
 }

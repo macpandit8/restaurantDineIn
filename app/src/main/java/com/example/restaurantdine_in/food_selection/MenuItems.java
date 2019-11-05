@@ -1,6 +1,4 @@
-package com.example.restaurantdine_in.menu;
-
-import com.example.restaurantdine_in.R;
+package com.example.restaurantdine_in.food_selection;
 
 import java.util.ArrayList;
 

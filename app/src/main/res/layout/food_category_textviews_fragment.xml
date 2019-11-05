@@ -4,6 +4,7 @@ android:layout_width="match_parent"
 android:layout_height="match_parent"
 android:orientation="vertical"
 android:weightSum="1"
+android:background="@drawable/left_border_background"
 android:layout_weight="0.4">
 
 <LinearLayout
