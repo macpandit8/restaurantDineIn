@@ -1,6 +1,7 @@
 package com.example.restaurantdine_in;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.restaurantdine_in.dialogs.DialogBoxHelper;
 import com.example.restaurantdine_in.food_selection.FoodCategorySelectionFragment;
 import com.example.restaurantdine_in.adapters.OrderItemListAdapter;
 import com.example.restaurantdine_in.food_selection.FoodItemSelectionFragment;
@@ -83,7 +85,18 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener, 
 
                     @Override
                     public void onClick(View view) {    //Back Button
-                        finish();
+                        if(foodItemCountList.isEmpty() && foodItemNameList.isEmpty() && foodItemCommentList.isEmpty() && foodItemPriceList.isEmpty()) {
+                            finish();
+                        } else {
+                            DialogBoxHelper.showDialog(MenuActivity.this, getString(R.string.yes_caps), getString(R.string.no_caps), getString(R.string.msg_discard_changes_go_back)
+                                    , true, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    clearOrderLists();
+                                    finish();
+                                }
+                            }, null).show();
+                        }
                     }
                 },
 
