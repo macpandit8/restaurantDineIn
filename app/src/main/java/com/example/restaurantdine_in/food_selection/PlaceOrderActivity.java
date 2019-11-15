@@ -1,29 +1,28 @@
-package com.example.restaurantdine_in;
+package com.example.restaurantdine_in.food_selection;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.restaurantdine_in.BaseActivity;
+import com.example.restaurantdine_in.Constants;
+import com.example.restaurantdine_in.R;
 import com.example.restaurantdine_in.dialogs.DialogBoxHelper;
-import com.example.restaurantdine_in.food_selection.FoodCategorySelectionFragment;
+import com.example.restaurantdine_in.dialogs.EditTextDialogFragment;
 import com.example.restaurantdine_in.adapters.OrderItemListAdapter;
-import com.example.restaurantdine_in.food_selection.FoodItemSelectionFragment;
-import com.example.restaurantdine_in.food_selection.IAddItemsToOrderListener;
-import com.example.restaurantdine_in.food_selection.IFoodItemSelectionFragmentListener;
-import com.example.restaurantdine_in.food_selection.IOnEditTextDialogListener;
 
 import java.util.ArrayList;
 
-public class MenuActivity extends BaseActivity implements View.OnClickListener, IOnEditTextDialogListener, IAddItemsToOrderListener {
+public class PlaceOrderActivity extends BaseActivity implements View.OnClickListener, IOnEditTextDialogListener, IAddItemsToOrderListener {
 
     private OrderItemListAdapter orderItemListAdapter = null;
 
@@ -40,12 +39,19 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener, 
     FoodItemSelectionFragment foodItemSelectionFragment;
 
     double totalBill = 0.00;
+    int tableNo;
+    Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTheme(R.style.MenuScreenTheme);
-        setContentView(R.layout.activity_menu);
+        setContentView(R.layout.activity_place_order);
+
+        if(getIntent().getExtras() != null) {
+            bundle = getIntent().getExtras();
+            tableNo = bundle.getInt(Constants.TABLE);
+        }
 
         setupActionBar();
 
@@ -59,12 +65,39 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener, 
 
         orderItemListAdapter =new OrderItemListAdapter(this, foodItemCountList, foodItemNameList, foodItemCommentList, foodItemPriceList);
         orderListView.setAdapter(orderItemListAdapter);
+
+        /**
+         * Delete the item from order list
+         */
+        orderListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, final int position, long l) {
+                DialogBoxHelper.showDialog(PlaceOrderActivity.this, getString(R.string.delete_caps), getString(R.string.cancel_caps),
+                        getString(R.string.msg_do_you_want_to_delete), true, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                foodItemCountList.remove(position);
+                                foodItemCommentList.remove(position);
+                                foodItemNameList.remove(position);
+                                foodItemPriceList.remove(position);
+                                notifyDataSetChangedAndCalculateTotalBill();
+                            }
+                        }, null).show();
+                return true;
+            }
+        });
+
+        /**
+         * Add comments to the item in the order list
+         */
         orderListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if(i==0) {
-                    Toast.makeText(MenuActivity.this, "item clicked", Toast.LENGTH_SHORT).show();
-                }
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                EditTextDialogFragment editTextDialogFragment = EditTextDialogFragment.newInstance(PlaceOrderActivity.this, position,
+                        "Add comment for "+foodItemNameList.get(position), getString(R.string.add_caps), getString(R.string.cancel_caps),
+                        null, true);
+                editTextDialogFragment.setCancelable(true);
+                editTextDialogFragment.show(getSupportFragmentManager(), "");
             }
         });
 
@@ -79,7 +112,7 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener, 
      * Place Order Button onClickListener
      */
     private void setupActionBar() {
-        setupActionBar("Table Number",
+        setupActionBar(Constants.TABLE + " NO " + tableNo,
 
                 new View.OnClickListener() {
 
@@ -88,7 +121,7 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener, 
                         if(foodItemCountList.isEmpty() && foodItemNameList.isEmpty() && foodItemCommentList.isEmpty() && foodItemPriceList.isEmpty()) {
                             finish();
                         } else {
-                            DialogBoxHelper.showDialog(MenuActivity.this, getString(R.string.yes_caps), getString(R.string.no_caps), getString(R.string.msg_discard_changes_go_back)
+                            DialogBoxHelper.showDialog(PlaceOrderActivity.this, getString(R.string.yes_caps), getString(R.string.no_caps), getString(R.string.msg_discard_changes_go_back)
                                     , true, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
@@ -105,10 +138,14 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener, 
                     @Override
                     public void onClick(View view) {    //Reset Button
                         if(!foodItemCountList.isEmpty() && !foodItemNameList.isEmpty() && !foodItemCommentList.isEmpty() && !foodItemPriceList.isEmpty()) {
-                            clearOrderLists();
-                            orderItemListAdapter.notifyDataSetChanged();
-                            totalBill = 0.00;
-                            invoiceTotalTV.setText(String.valueOf(totalBill));
+                            DialogBoxHelper.showDialog(PlaceOrderActivity.this, getString(R.string.yes_caps), getString(R.string.no_caps), getString(R.string.msg_clear_order)
+                                    , true, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            clearOrderLists();
+                                            notifyDataSetChangedAndCalculateTotalBill();
+                                        }
+                                    }, null).show();
                         }
                     }
                 },
@@ -136,13 +173,15 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener, 
     /**
      * Call this method whenever item is added/removed from the Order
      */
-    private void calculateTotalBill() {
+    private void notifyDataSetChangedAndCalculateTotalBill() {
+        orderItemListAdapter.notifyDataSetChanged();
+        totalBill = 0.00;
         if(!foodItemPriceList.isEmpty()) {
             for (double itemPrice : foodItemPriceList) {
                 totalBill = totalBill + itemPrice;
             }
-            invoiceTotalTV.setText(String.valueOf(totalBill));
         }
+        invoiceTotalTV.setText(String.valueOf(totalBill));
     }
 
     @Override
@@ -153,9 +192,9 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     public void onDoneClicked(Context context, int position, String aText, Fragment fragment, boolean fromOrderItemList) {
         if(fromOrderItemList) {
-
+            foodItemCommentList.set(position, aText);
+            orderItemListAdapter.notifyDataSetChanged();
         } else {
-//            foodItemSelectionFragmentListener.setFoodQty(aText);
             onAttachFragment(fragment);
             foodItemSelectionFragment.setFoodQty(position, aText);
         }
@@ -180,8 +219,6 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener, 
                 foodItemCommentList.add("");
             }
         }
-        orderItemListAdapter.notifyDataSetChanged();
-        totalBill = 0.00;
-        calculateTotalBill();
+        notifyDataSetChangedAndCalculateTotalBill();
     }
 }

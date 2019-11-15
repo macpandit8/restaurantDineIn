@@ -11,6 +11,20 @@ public class Constants {
     public static final int SEAT_CAP_TWO = 2;
     public static final int SEAT_CAP_TEN = 10;
 
+    /**
+     * Table numbers
+     */
+    public static final String TABLE = "TABLE";
+    public static final int TABLE_NO_1 = 1;
+    public static final int TABLE_NO_2 = 2;
+    public static final int TABLE_NO_3 = 3;
+    public static final int TABLE_NO_4 = 4;
+    public static final int TABLE_NO_5 = 5;
+    public static final int TABLE_NO_6 = 6;
+    public static final int TABLE_NO_7 = 7;
+    public static final int TABLE_NO_8 = 8;
+    public static final int TABLE_NO_9 = 9;
+
 
     /**
      * Menu Categories

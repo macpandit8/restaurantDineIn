@@ -87,7 +87,7 @@ public class EditTextDialogFragment extends DialogFragment {
         doneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                iOnEditTextDialogListener.onDoneClicked(mContext, mPosition, dialogEditText.getText().toString(), mFragment, false);
+                iOnEditTextDialogListener.onDoneClicked(mContext, mPosition, dialogEditText.getText().toString(), mFragment, mFromOrderList);
                 getDialog().dismiss();
             }
         });
