@@ -1,10 +1,8 @@
 package com.example.restaurantdine_in;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 
 import android.app.ActionBar;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -36,7 +34,7 @@ public class BaseActivity extends FragmentActivity {
             actionBar.setHomeButtonEnabled(true);
 
             View actionBarView ;
-            if(layoutResID == R.layout.activity_menu) {
+            if(layoutResID == R.layout.activity_place_order) {
                 actionBarView =View.inflate(this, R.layout.menu_screen_actionbar, null);
                 menuScreenTitleBar = actionBarView.findViewById(R.id.menuScreenTitleBar);
                 imgBack = actionBarView.findViewById(R.id.backButton);

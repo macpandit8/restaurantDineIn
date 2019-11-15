@@ -6,13 +6,15 @@ public class Table {
     int seatingCapacity;
     String shape;
     ImageView associatedTable;
-    boolean isOccupied;
+    boolean occupied;
+    int tableNumber;
 
-    public Table(ImageView associatedTable, int seatingCapacity, String shape) {
+    public Table(ImageView associatedTable, int seatingCapacity, String shape, int tableNumber) {
         this.seatingCapacity = seatingCapacity;
         this.shape = shape;
         this.associatedTable = associatedTable;
-        this.isOccupied = false;
+        this.occupied = false;
+        this.tableNumber = tableNumber;
     }
 
     public int getSeatingCapacity() {
@@ -27,12 +29,16 @@ public class Table {
         return this.associatedTable;
     }
 
-    public boolean getOccupied() {
-        return isOccupied;
+    public int getTableNumber() {
+        return tableNumber;
+    }
+
+    public boolean isOccupied() {
+        return occupied;
     }
 
     public void setOccupied(boolean isOccupied) {
-        this.isOccupied = isOccupied;
+        this.occupied = isOccupied;
     }
 
 }
