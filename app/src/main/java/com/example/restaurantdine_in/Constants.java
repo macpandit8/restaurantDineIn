@@ -76,4 +76,56 @@ public class Constants {
     public static final String CHILLI_PANEER = "Chilli Paneer";
     public static final String VEG_JALFRAIZI = "Veg Jalfraizi";
 
+//    Breads
+    public static final String NAAN = "Naan";
+    public static final String TANDOORI_ROTI = "Tandoori Roti";
+    public static final String ALOO_PARATHA = "Aloo Paratha";
+    public static final String GARLIC_NAAN = "Garlic Naan";
+    public static final String PANEER_NAAN = "Paneer Naan";
+    public static final String KEEMA_NAAN = "Keema Naan";
+    public static final String CHICKEN_NAAN = "Chicken Naan";
+
+//    Chicken
+    public static final String CHICKEN_CURRY = "Chicken Curry";
+    public static final String BUTTER_CHICKEN = "Butter Chicken";
+    public static final String CHICKEN_KORMA = "Chicken Korma";
+    public static final String CHILLY_CHICKEN = "Chilly Chicken";
+    public static final String CHICKEN_JALFRAZI = "Chicken Jalfrazi";
+    public static final String CHICKEN_SAAG = "Chicken Saag";
+    public static final String CHICKEN_MADRASI = "Chicken Madrasi";
+    public static final String CHICKEN_DHANSAK = "Chicken Dhansak";
+    public static final String CHICKEN_TIKKA_MASALA = "Chicken Tikka Masala";
+    public static final String CHICKEN_VINDALOO = "Chicken Vindaloo";
+
+//    Lamb
+    public static final String LAMB_CURRY = "Lamb Curry";
+    public static final String LAMB_CHILLY = "Lamb Chilly";
+    public static final String LAMB_KORMA = "Lamb Korma";
+    public static final String LAMB_VINDALOO = "Lamb Vindadloo";
+    public static final String LAMB_JALFRAZI = "Lamb Jalfrazi";
+    public static final String LAMB_SAAG = "Lamb Saag";
+    public static final String KEEMA_MASALA = "Keema Masala";
+    public static final String LAMB_MADRASI = "Lamb Madrasi";
+    public static final String LAMB_BHUNA = "Lamb Bhuna";
+
+//    Drinks
+    public static final String INDIAN_TEA = "Indian Tea";
+    public static final String MANGO_JUICE = "Mango Juice";
+    public static final String SALTED_LASSI = "Salty Lassi";
+    public static final String SOFT_DRINK = "Soft Drink";
+    public static final String INDIAN_SOFT_DRINK = "Indian Soft Drink";
+    public static final String MANGO_LASSI = "Mango Lassi";
+    public static final String SWEET_LASSI = "Sweet Lassi";
+
+//    Sea Food
+    public static final String SHRIMP_CURRY = "Shrimp Curry";
+    public static final String FISH_CURRY = "Fish Curry";
+    public static final String SHRIMP_SAAG = "Shrimp Saag";
+    public static final String SHRIMP_KORMA = "Shrimp Korma";
+    public static final String SHRIMP_CHILLY = "Shrimp Chilly";
+    public static final String SHRIMP_VINDALOO = "Shrimp Vindaloo";
+    public static final String SHRIMP_JALFRAZI = "Shrimp Jalfrazi";
+    public static final String FRIED_FISH = "Fried Fish";
+
+
 }
