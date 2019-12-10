@@ -196,7 +196,7 @@
 
                     <TextView
                         style="@style/TABLE_NO"
-                        android:text="@string/table10"/>
+                        android:text="@string/table9"/>
 
                 </RelativeLayout>
 

@@ -7,7 +7,7 @@
     android:background="@color/background_black"
     android:orientation="horizontal"
     android:weightSum="1"
-    tools:context=".MenuActivity">
+    tools:context=".food_selection.PlaceOrderActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -57,7 +57,7 @@
                 android:paddingLeft="@dimen/margin_20dp"
                 android:text="$"/>
             <TextView
-                android:id="@+id/invoiceTotal"
+                android:id="@+id/invoiceTotalTV"
                 style="@style/MENU_SCREEN_ORDERLIST_TEXTVIEW"
                 android:layout_weight="0.2"
                 android:layout_gravity="center_vertical"

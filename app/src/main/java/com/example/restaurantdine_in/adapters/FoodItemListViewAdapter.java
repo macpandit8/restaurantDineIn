@@ -95,4 +95,9 @@ public class FoodItemListViewAdapter extends ArrayAdapter {
         foodCountList.set(position, Integer.parseInt(foodQty));
         notifyDataSetChanged();
     }
+
+    public ArrayList<Integer> getFoodCountList() {
+        return foodCountList;
+    }
+
 }

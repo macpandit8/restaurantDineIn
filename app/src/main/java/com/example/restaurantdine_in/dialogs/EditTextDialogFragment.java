@@ -10,17 +10,15 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
-import com.example.restaurantdine_in.MenuActivity;
 import com.example.restaurantdine_in.R;
 import com.example.restaurantdine_in.adapters.FoodItemListViewAdapter;
-import com.example.restaurantdine_in.menu.IOnEditTextDialogListener;
+import com.example.restaurantdine_in.food_selection.IOnEditTextDialogListener;
 
 public class EditTextDialogFragment extends DialogFragment {
 
@@ -89,7 +87,7 @@ public class EditTextDialogFragment extends DialogFragment {
         doneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                iOnEditTextDialogListener.onDoneClicked(mContext, mPosition, dialogEditText.getText().toString(), mFragment, false);
+                iOnEditTextDialogListener.onDoneClicked(mContext, mPosition, dialogEditText.getText().toString(), mFragment, mFromOrderList);
                 getDialog().dismiss();
             }
         });

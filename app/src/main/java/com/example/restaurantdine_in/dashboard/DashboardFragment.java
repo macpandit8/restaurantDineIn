@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import androidx.fragment.app.Fragment;
 
 import com.example.restaurantdine_in.Constants;
-import com.example.restaurantdine_in.MenuActivity;
+import com.example.restaurantdine_in.food_selection.PlaceOrderActivity;
 import com.example.restaurantdine_in.R;
 
 import java.util.ArrayList;
@@ -40,15 +40,15 @@ public class DashboardFragment extends Fragment implements IDashboardActivityLis
         tb8 = dashboardView.findViewById(R.id.tb8);
         tb9 = dashboardView.findViewById(R.id.tb9);
 
-        Table table1 = new Table(tb1, Constants.SEAT_CAP_FOUR, Constants.SQUARE_TABLE);
-        Table table2 = new Table(tb2, Constants.SEAT_CAP_FOUR, Constants.SQUARE_TABLE);
-        Table table3 = new Table(tb3, Constants.SEAT_CAP_FOUR, Constants.SQUARE_TABLE);
-        Table table4 = new Table(tb4, Constants.SEAT_CAP_TWO, Constants.ROUND_TABLE);
-        Table table5 = new Table(tb5, Constants.SEAT_CAP_FOUR, Constants.ROUND_TABLE);
-        Table table6 = new Table(tb6, Constants.SEAT_CAP_FOUR, Constants.ROUND_TABLE);
-        Table table7 = new Table(tb7, Constants.SEAT_CAP_FOUR, Constants.ROUND_TABLE);
-        Table table8 = new Table(tb8, Constants.SEAT_CAP_TWO, Constants.SQUARE_TABLE);
-        Table table9 = new Table(tb9, Constants.SEAT_CAP_TEN, Constants.SQUARE_TABLE);
+        Table table1 = new Table(tb1, Constants.SEAT_CAP_FOUR, Constants.SQUARE_TABLE, Constants.TABLE_NO_1);
+        Table table2 = new Table(tb2, Constants.SEAT_CAP_FOUR, Constants.SQUARE_TABLE, Constants.TABLE_NO_2);
+        Table table3 = new Table(tb3, Constants.SEAT_CAP_FOUR, Constants.SQUARE_TABLE, Constants.TABLE_NO_3);
+        Table table4 = new Table(tb4, Constants.SEAT_CAP_TWO, Constants.ROUND_TABLE, Constants.TABLE_NO_4);
+        Table table5 = new Table(tb5, Constants.SEAT_CAP_FOUR, Constants.ROUND_TABLE, Constants.TABLE_NO_5);
+        Table table6 = new Table(tb6, Constants.SEAT_CAP_FOUR, Constants.ROUND_TABLE, Constants.TABLE_NO_6);
+        Table table7 = new Table(tb7, Constants.SEAT_CAP_FOUR, Constants.ROUND_TABLE, Constants.TABLE_NO_7);
+        Table table8 = new Table(tb8, Constants.SEAT_CAP_TWO, Constants.SQUARE_TABLE, Constants.TABLE_NO_8);
+        Table table9 = new Table(tb9, Constants.SEAT_CAP_TEN, Constants.SQUARE_TABLE, Constants.TABLE_NO_9);
 
         ArrayList<Table> tables = new ArrayList<>();
         tables.add(table1);
@@ -73,22 +73,21 @@ public class DashboardFragment extends Fragment implements IDashboardActivityLis
                 @Override
                 public void onClick(View view) {
 
-                    if(!table.isOccupied) {
-                        if (table.getSeatingCapacity() == Constants.SEAT_CAP_FOUR) {
-                            if (table.getShape().equals(Constants.SQUARE_TABLE)) {
-                                table.getAssociatedTable().setImageResource(R.drawable.tb4four_square_occupied);
-                                if(table.getAssociatedTable().equals(tb1)) {
-                                    Intent intent = new Intent(getActivity(), MenuActivity.class);
-                                    startActivity(intent);
-                                }
-                            } else {
-                                table.getAssociatedTable().setImageResource(R.drawable.tb4four_round_occupied);
-                            }
-                        } else if (table.getSeatingCapacity() == Constants.SEAT_CAP_TWO) {
-                            table.getAssociatedTable().setImageResource(R.drawable.tb4two_vertical_occupied);
-                        } else if (table.getSeatingCapacity() == Constants.SEAT_CAP_TEN) {
-                            table.getAssociatedTable().setImageResource(R.drawable.tb4ten_occupied);
+                    Intent intent = new Intent(getActivity(), PlaceOrderActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt(Constants.TABLE, table.getTableNumber());
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                    if (table.getSeatingCapacity() == Constants.SEAT_CAP_FOUR) {
+                        if (table.getShape().equals(Constants.SQUARE_TABLE)) {
+                            table.getAssociatedTable().setImageResource(R.drawable.tb4four_square_occupied);
+                        } else {
+                            table.getAssociatedTable().setImageResource(R.drawable.tb4four_round_occupied);
                         }
+                    } else if (table.getSeatingCapacity() == Constants.SEAT_CAP_TWO) {
+                        table.getAssociatedTable().setImageResource(R.drawable.tb4two_vertical_occupied);
+                    } else if (table.getSeatingCapacity() == Constants.SEAT_CAP_TEN) {
+                        table.getAssociatedTable().setImageResource(R.drawable.tb4ten_occupied);
                     }
 
                 }
