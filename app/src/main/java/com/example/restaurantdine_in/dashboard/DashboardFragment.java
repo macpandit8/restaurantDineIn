@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import androidx.fragment.app.Fragment;
 
 import com.example.restaurantdine_in.Constants;
+import com.example.restaurantdine_in.printerLib.KitchenPrinterActivity;
 import com.example.restaurantdine_in.food_selection.PlaceOrderActivity;
 import com.example.restaurantdine_in.R;
 
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 public class DashboardFragment extends Fragment implements IDashboardActivityListener {
 
     ImageView tb1, tb2, tb3, tb4, tb5, tb6, tb7, tb8, tb9;
+    ImageView kitchen;
 
     private DashboardActivity dashboardActivity = null;
 
@@ -39,6 +41,15 @@ public class DashboardFragment extends Fragment implements IDashboardActivityLis
         tb7 = dashboardView.findViewById(R.id.tb7);
         tb8 = dashboardView.findViewById(R.id.tb8);
         tb9 = dashboardView.findViewById(R.id.tb9);
+
+        kitchen = dashboardView.findViewById(R.id.kitchen);
+        kitchen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent kitchenIntent = new Intent(getActivity(), KitchenPrinterActivity.class);
+                getActivity().startActivity(kitchenIntent);
+            }
+        });
 
         Table table1 = new Table(tb1, Constants.SEAT_CAP_FOUR, Constants.SQUARE_TABLE, Constants.TABLE_NO_1);
         Table table2 = new Table(tb2, Constants.SEAT_CAP_FOUR, Constants.SQUARE_TABLE, Constants.TABLE_NO_2);
