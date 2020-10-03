@@ -232,7 +232,7 @@
                 android:layout_weight="0.4"
                 android:paddingBottom="@dimen/margin_25dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/kitchen" />
+                android:src="@drawable/kitchen_disconnected" />
 
             <TextView
                 android:layout_width="wrap_content"

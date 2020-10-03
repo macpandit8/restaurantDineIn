@@ -13,6 +13,9 @@ import com.example.restaurantdine_in.Constants;
 import com.example.restaurantdine_in.printerLib.KitchenPrinterActivity;
 import com.example.restaurantdine_in.food_selection.PlaceOrderActivity;
 import com.example.restaurantdine_in.R;
+import com.example.restaurantdine_in.printerLib.ModelCapability;
+import com.example.restaurantdine_in.printerLib.PrinterSettingManager;
+import com.example.restaurantdine_in.printerLib.PrinterSettings;
 
 import java.util.ArrayList;
 
@@ -23,6 +26,12 @@ public class DashboardFragment extends Fragment implements IDashboardActivityLis
 
     private DashboardActivity dashboardActivity = null;
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getKitchenConfiguration();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -75,6 +84,30 @@ public class DashboardFragment extends Fragment implements IDashboardActivityLis
         onClickListener(tables);
 
         return dashboardView;
+    }
+
+    private void getKitchenConfiguration() {
+        PrinterSettingManager settingManager = new PrinterSettingManager(getActivity());
+        PrinterSettings settings       = settingManager.getPrinterSettings();
+
+        boolean isDeviceSelected     = false;
+        int     modelIndex           = ModelCapability.NONE;
+        String  modelName            = "";
+        boolean isBluetoothInterface = false;
+        boolean isUsbInterface       = false;
+
+        if (settings != null) {
+            isDeviceSelected     = true;
+            modelIndex           = settings.getModelIndex();
+            modelName            = settings.getModelName();
+            isBluetoothInterface = settings.getPortName().toUpperCase().startsWith("BT:");
+            isUsbInterface       = settings.getPortName().toUpperCase().startsWith("USB:");
+        }
+        if (isDeviceSelected) {
+            kitchen.setImageResource(R.drawable.kitchen_connected);
+        } else {
+            kitchen.setImageResource(R.drawable.kitchen_disconnected);
+        }
     }
 
     private void onClickListener(ArrayList<Table> tables) {

@@ -26,4 +26,7 @@ public class PrinterSettingConstant {
 
     public static final String BUNDLE_KEY_INTERFACE = "bundle_key_interface";
     public static final String BUNDLE_KEY_PORT_NAME = "intent_key_port_name";
+    public static final String BUNDLE_KEY_MODEL_INDEX = "bundle_key_model_index";
+    public static final String BUNDLE_KEY_DRAWER_OPEN_STATUS = "bundle_key_drawer_open_status";
+    public static final String BUNDLE_KEY_PAPER_SIZE = "bundle_key_paper_size";
 }

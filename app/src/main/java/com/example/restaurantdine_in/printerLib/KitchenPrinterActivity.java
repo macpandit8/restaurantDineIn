@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.restaurantdine_in.BaseActivity;
 import com.example.restaurantdine_in.R;
@@ -23,10 +25,23 @@ public class KitchenPrinterActivity extends BaseActivity implements CommonAlertD
     ListView printerListView;
     Button refreshPrinterSearch;
     private String mMacAddress;
+    private String mModelName;
+    private String mPortName;
     AlertDialog dialog;
+
+    private int       mModelIndex;
+    private String    mPortSettings;
+    private int       mPrinterSettingIndex;
+    private int       mPaperSize;
+    private Boolean   mDrawerOpenStatus;
 
     private static final String INTERFACE_SELECT_DIALOG = "InterfaceSelectDialog";
     private static final String PORT_NAME_INPUT_DIALOG = "PortNameInputDialog";
+    private static final String MODEL_CONFIRM_DIALOG             = "ModelConfirmDialog";
+    private static final String MODEL_SELECT_DIALOG_0            = "ModelSelectDialog0";
+    private static final String MODEL_SELECT_DIALOG_1            = "ModelSelectDialog1";
+    private static final String DRAWER_OPEN_ACTIVE_SELECT_DIALOG = "DrawerOpenSelectDialog";
+    private static final String PAPER_SIZE_SELECT_DIALOG         = "PaperSizeSelectDialog";
 
     private ArrayList<PrinterInfo> printersList;
     private PrinterListViewAdapter printerListViewAdapter;
@@ -36,6 +51,8 @@ public class KitchenPrinterActivity extends BaseActivity implements CommonAlertD
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_kitchen_printer);
 
+        mPrinterSettingIndex = 0;
+
         initializeProgressDialog();
 
         printersList = new ArrayList<>();
@@ -44,6 +61,7 @@ public class KitchenPrinterActivity extends BaseActivity implements CommonAlertD
 
         printerListViewAdapter = new PrinterListViewAdapter(this, printersList);
         printerListView.setAdapter(printerListViewAdapter);
+        printerListView.setOnItemClickListener(onPrinterSelectedListener());
 
         refreshPrinterSearch = findViewById(R.id.refreshPrinterSearch);
         refreshPrinterSearch.setOnClickListener(new View.OnClickListener() {
@@ -54,6 +72,28 @@ public class KitchenPrinterActivity extends BaseActivity implements CommonAlertD
         });
         updatePrinterList();
 
+    }
+
+    private AdapterView.OnItemClickListener onPrinterSelectedListener() {
+        return new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                int model = ModelCapability.getModel(printersList.get(position).getModelName().toString());
+
+                mPortName = printersList.get(position).getPortName();
+                mModelName = printersList.get(position).getModelName();
+                mMacAddress = printersList.get(position).getMacAddress();
+
+                if (model == ModelCapability.NONE) {
+                    ModelSelectDialogFragment dialog = ModelSelectDialogFragment.newInstance(MODEL_SELECT_DIALOG_0);
+                    dialog.show(getSupportFragmentManager());
+                }
+                else {
+                    ModelConfirmDialogFragment dialog = ModelConfirmDialogFragment.newInstance(MODEL_CONFIRM_DIALOG, model);
+                    dialog.show(getSupportFragmentManager());
+                }
+            }
+        };
     }
 
     private void initializeProgressDialog() {
@@ -107,7 +147,174 @@ public class KitchenPrinterActivity extends BaseActivity implements CommonAlertD
                 }
                 break;
             }
+            case MODEL_CONFIRM_DIALOG: {
+                boolean isPressedYes = data.hasExtra(CommonAlertDialogFragment.LABEL_POSITIVE);
+
+                if (isPressedYes) {
+                    mModelIndex   = data.getIntExtra(PrinterSettingConstant.BUNDLE_KEY_MODEL_INDEX, ModelCapability.NONE);
+                    mPortSettings = ModelCapability.getPortSettings(mModelIndex);
+
+                    showPaperSizeOrDrawerOpenActiveSelectDialog();
+                }
+                else {
+                    ModelSelectDialogFragment dialog = ModelSelectDialogFragment.newInstance(MODEL_SELECT_DIALOG_0);
+                    dialog.show(getSupportFragmentManager());
+                }
+                break;
+            }
+            case MODEL_SELECT_DIALOG_0: {
+                boolean isCanceled = data.hasExtra(CommonAlertDialogFragment.LABEL_NEGATIVE);
+
+                if (isCanceled) {
+                    return;
+                }
+
+                mModelIndex   = data.getIntExtra(PrinterSettingConstant.BUNDLE_KEY_MODEL_INDEX, ModelCapability.NONE);
+                mPortSettings = ModelCapability.getPortSettings(mModelIndex);
+
+                showPaperSizeOrDrawerOpenActiveSelectDialog();
+                break;
+            }
+            case MODEL_SELECT_DIALOG_1: {
+                boolean isCanceled = data.hasExtra(CommonAlertDialogFragment.LABEL_NEGATIVE);
+
+                if (isCanceled) {
+                    return;
+                }
+
+                mModelIndex = data.getIntExtra(PrinterSettingConstant.BUNDLE_KEY_MODEL_INDEX, ModelCapability.NONE);
+                mModelName  = ModelCapability.getModelTitle(mModelIndex);
+
+                showPaperSizeOrDrawerOpenActiveSelectDialog();
+                break;
+            }
+            case PAPER_SIZE_SELECT_DIALOG: {
+                boolean isCanceled = data.hasExtra(CommonAlertDialogFragment.LABEL_NEGATIVE);
+
+                if (isCanceled) {
+                    return;
+                }
+
+                mPaperSize = data.getIntExtra(PrinterSettingConstant.BUNDLE_KEY_PAPER_SIZE, PrinterSettingConstant.PAPER_SIZE_THREE_INCH);
+
+                if (ModelCapability.canSetDrawerOpenStatus(mModelIndex)) {
+                    DrawerOpenActiveSelectDialogFragment dialog = DrawerOpenActiveSelectDialogFragment.newInstance(DRAWER_OPEN_ACTIVE_SELECT_DIALOG);
+                    dialog.show(getSupportFragmentManager());
+                }
+                else {
+                    mDrawerOpenStatus = true;
+                    registerPrinter();
+
+                    finish();
+                }
+                break;
+            }
+            case DRAWER_OPEN_ACTIVE_SELECT_DIALOG: {
+                boolean isCanceled = data.hasExtra(CommonAlertDialogFragment.LABEL_NEGATIVE);
+
+                if (isCanceled) {
+                    return;
+                }
+
+                mDrawerOpenStatus = data.getBooleanExtra(PrinterSettingConstant.BUNDLE_KEY_DRAWER_OPEN_STATUS, false);
+                registerPrinter();
+
+                finish();
+                break;
+            }
         }
+    }
+
+    private void showPaperSizeOrDrawerOpenActiveSelectDialog() {
+        // In the SDK sample, when setting up a backup device, the paper size (dot) is the same as the destination device.
+        int destinationDevicePaperSize = PrinterSettingConstant.PAPER_SIZE_THREE_INCH;
+        if (mPrinterSettingIndex != 0) {
+            PrinterSettingManager settingManager = new PrinterSettingManager(this);
+            PrinterSettings       settings       = settingManager.getPrinterSettings();
+
+            destinationDevicePaperSize = settings.getPaperSize();
+        }
+
+        if (mModelIndex == ModelCapability.SP700) {
+            if (mPrinterSettingIndex == 0) {    // Destination device
+                mPaperSize = PrinterSettingConstant.PAPER_SIZE_DOT_THREE_INCH;
+            }
+            else {                              // Backup device
+                mPaperSize = destinationDevicePaperSize;
+            }
+
+            DrawerOpenActiveSelectDialogFragment dialog = DrawerOpenActiveSelectDialogFragment.newInstance(DRAWER_OPEN_ACTIVE_SELECT_DIALOG);
+            dialog.show(getSupportFragmentManager());
+        }
+        else if (mModelIndex == ModelCapability.BSC10) {
+            if (mPrinterSettingIndex == 0) {    // Destination device
+                mPaperSize = PrinterSettingConstant.PAPER_SIZE_ESCPOS_THREE_INCH;
+            }
+            else {                              // Backup device
+                mPaperSize = destinationDevicePaperSize;
+            }
+
+            DrawerOpenActiveSelectDialogFragment dialog = DrawerOpenActiveSelectDialogFragment.newInstance(DRAWER_OPEN_ACTIVE_SELECT_DIALOG);
+            dialog.show(getSupportFragmentManager());
+        }
+        else if (mModelIndex == ModelCapability.SK1_211_221_V211 || mModelIndex == ModelCapability.SK1_211_221_V211_Presenter) {
+            if (mPrinterSettingIndex == 0) {    // Destination device
+                mPaperSize = PrinterSettingConstant.PAPER_SIZE_SK1_TWO_INCH;
+            }
+            else {                              // Backup device
+                mPaperSize = destinationDevicePaperSize;
+            }
+
+            mDrawerOpenStatus = true;
+            registerPrinter();
+
+            finish();
+        }
+        else if (mModelIndex == ModelCapability.SK1_311_321_V311 || mModelIndex == ModelCapability.SK1_311_V311_Presenter) {
+            if (mPrinterSettingIndex == 0) {    // Destination device
+                mPaperSize = PrinterSettingConstant.PAPER_SIZE_THREE_INCH;
+            }
+            else {                              // Backup device
+                mPaperSize = destinationDevicePaperSize;
+            }
+
+            mDrawerOpenStatus = true;
+            registerPrinter();
+
+            finish();
+        }
+        else {
+            if (mPrinterSettingIndex == 0) {    // Destination device
+                PaperSizeSelectDialogFragment dialog = PaperSizeSelectDialogFragment.newInstance(PAPER_SIZE_SELECT_DIALOG);
+                dialog.show(getSupportFragmentManager());
+            }
+            else {                              // Backup device
+                mPaperSize = destinationDevicePaperSize;
+
+                if (ModelCapability.canSetDrawerOpenStatus(mModelIndex)) {
+                    DrawerOpenActiveSelectDialogFragment dialog = DrawerOpenActiveSelectDialogFragment.newInstance(DRAWER_OPEN_ACTIVE_SELECT_DIALOG);
+                    dialog.show(getSupportFragmentManager());
+                }
+                else {
+                    mDrawerOpenStatus = true;
+                    registerPrinter();
+
+                    finish();
+                }
+            }
+        }
+    }
+
+    /**
+     * Register printer information to SharedPreference.
+     */
+    private void registerPrinter() {
+        PrinterSettingManager settingManager = new PrinterSettingManager(this);
+
+        settingManager.storePrinterSettings(
+                mPrinterSettingIndex,
+                new PrinterSettings(mModelIndex, mPortName, mPortSettings, mMacAddress, mModelName, mDrawerOpenStatus, mPaperSize)
+        );
     }
 
     /**
