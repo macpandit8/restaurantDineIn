@@ -28,4 +28,11 @@ public class DialogBoxHelper {
 
         return ab.create();
     }
+
+    public static AlertDialog progressDialog(Context context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setCancelable(false); // if you want user to wait for some process to finish,
+        builder.setView(R.layout.progress_bar_dialog);
+        return builder.create();
+    }
 }

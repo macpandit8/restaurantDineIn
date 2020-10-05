@@ -6,13 +6,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.restaurantdine_in.BaseActivity;
 import com.example.restaurantdine_in.R;
+import com.example.restaurantdine_in.dialogs.DialogBoxHelper;
 import com.starmicronics.stario.PortInfo;
 import com.starmicronics.stario.StarIOPort;
 import com.starmicronics.stario.StarIOPortException;
@@ -27,7 +26,7 @@ public class KitchenPrinterActivity extends BaseActivity implements CommonAlertD
     private String mMacAddress;
     private String mModelName;
     private String mPortName;
-    AlertDialog dialog;
+    AlertDialog mProgressDialog;
 
     private int       mModelIndex;
     private String    mPortSettings;
@@ -51,9 +50,9 @@ public class KitchenPrinterActivity extends BaseActivity implements CommonAlertD
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_kitchen_printer);
 
-        mPrinterSettingIndex = 0;
+        mProgressDialog = DialogBoxHelper.progressDialog(this);
 
-        initializeProgressDialog();
+        mPrinterSettingIndex = 0;
 
         printersList = new ArrayList<>();
 
@@ -96,13 +95,6 @@ public class KitchenPrinterActivity extends BaseActivity implements CommonAlertD
         };
     }
 
-    private void initializeProgressDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setCancelable(false); // if you want user to wait for some process to finish,
-        builder.setView(R.layout.progress_bar_dialog);
-        dialog = builder.create();
-    }
-
     private void updatePrinterList() {
 //        adapter.clear();
 
@@ -140,7 +132,7 @@ public class KitchenPrinterActivity extends BaseActivity implements CommonAlertD
                             searchTask.execute(selectedInterface);
                         }
 
-                        dialog.show();
+                        mProgressDialog.show();
                     }
                 } else if (isCanceled) {
                     finish();
@@ -345,8 +337,8 @@ public class KitchenPrinterActivity extends BaseActivity implements CommonAlertD
                 addItem(info);
             }
 
-            if (dialog != null) {
-                dialog.dismiss();
+            if (mProgressDialog != null) {
+                mProgressDialog.dismiss();
             }
 
             printerListViewAdapter.notifyDataSetChanged();
