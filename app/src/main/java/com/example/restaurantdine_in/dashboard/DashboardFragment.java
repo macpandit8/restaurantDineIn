@@ -1,54 +1,42 @@
 package com.example.restaurantdine_in.dashboard;
 
-import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.restaurantdine_in.AboutActivity;
 import com.example.restaurantdine_in.Constants;
-import com.example.restaurantdine_in.dialogs.DialogBoxHelper;
-import com.example.restaurantdine_in.printerLib.CommonAlertDialogFragment;
-import com.example.restaurantdine_in.printerLib.Communication;
-import com.example.restaurantdine_in.printerLib.ILocalizeReceipts;
 import com.example.restaurantdine_in.printerLib.KitchenPrinterActivity;
 import com.example.restaurantdine_in.food_selection.PlaceOrderActivity;
 import com.example.restaurantdine_in.R;
 import com.example.restaurantdine_in.printerLib.ModelCapability;
-import com.example.restaurantdine_in.printerLib.PrinterFunctions;
 import com.example.restaurantdine_in.printerLib.PrinterSettingManager;
 import com.example.restaurantdine_in.printerLib.PrinterSettings;
-import com.starmicronics.starioextension.ICommandBuilder;
-import com.starmicronics.starioextension.StarIoExt;
 
 import java.util.ArrayList;
 
-public class DashboardFragment extends Fragment implements IDashboardActivityListener, CommonAlertDialogFragment.Callback {
+public class DashboardFragment extends Fragment implements IDashboardActivityListener {
 
     ImageView tb1, tb2, tb3, tb4, tb5, tb6, tb7, tb8, tb9;
     ImageView kitchen, cashRegister;
 
-    AlertDialog mProgressDialog;
 
     private DashboardActivity dashboardActivity = null;
-
-    private boolean mIsForeground;
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        mIsForeground = false;
-    }
 
     @Override
     public void onResume() {
         super.onResume();
-        getKitchenConfiguration();
+        if (hasKitchenPrinterConfiguration(getActivity())) {
+            kitchen.setImageResource(R.drawable.kitchen_connected);
+        } else {
+            kitchen.setImageResource(R.drawable.kitchen_disconnected);
+        }
     }
 
     @Override
@@ -58,7 +46,6 @@ public class DashboardFragment extends Fragment implements IDashboardActivityLis
         View dashboardView = inflater.inflate(R.layout.dashboard_fragment, container, false);
 
         dashboardActivity = (DashboardActivity) getContext();
-        mProgressDialog = DialogBoxHelper.progressDialog(getActivity());
 
         tb1 = dashboardView.findViewById(R.id.tb1);
         tb2 = dashboardView.findViewById(R.id.tb2);
@@ -83,8 +70,8 @@ public class DashboardFragment extends Fragment implements IDashboardActivityLis
         cashRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mIsForeground = true;
-                printTest();
+                Intent aboutActivityIntent = new Intent(getActivity(), AboutActivity.class);
+                startActivity(aboutActivityIntent);
             }
         });
 
@@ -114,78 +101,8 @@ public class DashboardFragment extends Fragment implements IDashboardActivityLis
         return dashboardView;
     }
 
-    private void printTest() {
-        //TODO: Code Cleanup required
-
-        mProgressDialog.show();
-
-        byte[] commands;
-
-        PrinterSettingManager settingManager = new PrinterSettingManager(getActivity());
-        PrinterSettings       settings       = settingManager.getPrinterSettings();
-
-        StarIoExt.Emulation emulation = ModelCapability.getEmulation(settings.getModelIndex());
-        int paperSize = settings.getPaperSize();
-
-        ILocalizeReceipts localizeReceipts = ILocalizeReceipts.createLocalizeReceipts(0, paperSize);
-
-        switch (1) {
-            default:
-            case 1:
-                commands = PrinterFunctions.createTextReceiptData(emulation, localizeReceipts, false);
-                break;
-//            case 2:
-//                commands = PrinterFunctions.createTextReceiptData(emulation, localizeReceipts, true);
-//                break;
-//            case 3:
-//                commands = PrinterFunctions.createRasterReceiptData(emulation, localizeReceipts, getResources());
-//                break;
-//            case 4:
-//                commands = PrinterFunctions.createScaleRasterReceiptData(emulation, localizeReceipts, getResources(), paperSize, true);
-//                break;
-//            case 5:
-//                commands = PrinterFunctions.createScaleRasterReceiptData(emulation, localizeReceipts, getResources(), paperSize, false);
-//                break;
-//            case 6:
-//                commands = PrinterFunctions.createCouponData(emulation, localizeReceipts, getResources(), paperSize, ICommandBuilder.BitmapConverterRotation.Normal);
-//                break;
-//            case 7:
-//                commands = PrinterFunctions.createCouponData(emulation, localizeReceipts, getResources(), paperSize, ICommandBuilder.BitmapConverterRotation.Right90);
-//                break;
-//            case 8:
-//                if (mBitmap != null) {
-//                    commands = PrinterFunctions.createRasterData(emulation, mBitmap, paperSize, true);
-//                }
-//                else {
-//                    commands = new byte[0];
-//                }
-//                break;
-        }
-
-        Communication.sendCommands(this, commands, settings.getPortName(), settings.getPortSettings(), 10000, 30000, getActivity(), mCallback);     // 10000mS!!!
-    }
-
-    private final Communication.SendCallback mCallback = new Communication.SendCallback() {
-        @Override
-        public void onStatus(Communication.CommunicationResult communicationResult) {
-            if (!mIsForeground) {
-                return;
-            }
-
-            if (mProgressDialog != null) {
-                mProgressDialog.dismiss();
-            }
-
-            CommonAlertDialogFragment dialog = CommonAlertDialogFragment.newInstance("CommResultDialog");
-            dialog.setTitle("Communication Result");
-            dialog.setMessage(Communication.getCommunicationResultMessage(communicationResult));
-            dialog.setPositiveButton("OK");
-            dialog.show(getChildFragmentManager());
-        }
-    };
-
-    private void getKitchenConfiguration() {
-        PrinterSettingManager settingManager = new PrinterSettingManager(getActivity());
+    public static boolean hasKitchenPrinterConfiguration(Context context) {
+        PrinterSettingManager settingManager = new PrinterSettingManager(context);
         PrinterSettings settings       = settingManager.getPrinterSettings();
 
         boolean isDeviceSelected     = false;
@@ -201,11 +118,7 @@ public class DashboardFragment extends Fragment implements IDashboardActivityLis
             isBluetoothInterface = settings.getPortName().toUpperCase().startsWith("BT:");
             isUsbInterface       = settings.getPortName().toUpperCase().startsWith("USB:");
         }
-        if (isDeviceSelected) {
-            kitchen.setImageResource(R.drawable.kitchen_connected);
-        } else {
-            kitchen.setImageResource(R.drawable.kitchen_disconnected);
-        }
+        return isDeviceSelected;
     }
 
     private void onClickListener(ArrayList<Table> tables) {
@@ -237,8 +150,5 @@ public class DashboardFragment extends Fragment implements IDashboardActivityLis
         }
     }
 
-    @Override
-    public void onDialogResult(String tag, Intent data) {
-        //Do nothing
-    }
+
 }

@@ -6,6 +6,8 @@ import android.os.Looper;
 
 import androidx.core.util.Pair;
 
+import com.example.restaurantdine_in.R;
+import com.example.restaurantdine_in.dialogs.DialogBoxHelper;
 import com.starmicronics.starioextension.StarIoExtManager;
 
 import com.starmicronics.stario.StarIOPort;
@@ -279,6 +281,7 @@ class SendCommandThread extends Thread {
                 status = mPort.beginCheckedBlock();
 
                 if (status.offline) {
+                    DialogBoxHelper.showNotifyingDialog(mContext, mContext.getString(R.string.ok_caps), "A printer is offline.", true, null);
                     throw new StarIOPortException("A printer is offline.");
                 }
 
@@ -293,10 +296,13 @@ class SendCommandThread extends Thread {
                 status = mPort.endCheckedBlock();
 
                 if (status.coverOpen) {
+                    DialogBoxHelper.showNotifyingDialog(mContext, mContext.getString(R.string.ok_caps), "Printer cover is open.", true, null);
                     throw new StarIOPortException("Printer cover is open");
                 } else if (status.receiptPaperEmpty) {
+                    DialogBoxHelper.showNotifyingDialog(mContext, mContext.getString(R.string.ok_caps), "Receipt paper is empty.", true, null);
                     throw new StarIOPortException("Receipt paper is empty");
                 } else if (status.offline) {
+                    DialogBoxHelper.showNotifyingDialog(mContext, mContext.getString(R.string.ok_caps), "Receipt paper is empty.", true, null);
                     throw new StarIOPortException("Printer is offline");
                 }
 
@@ -310,7 +316,7 @@ class SendCommandThread extends Thread {
                 try {
                     StarIOPort.releasePort(mPort);
                 } catch (StarIOPortException e) {
-                    // Nothing
+                    DialogBoxHelper.showNotifyingDialog(mContext, mContext.getString(R.string.ok_caps), "Try again! something went wrong.", true, null);
                 }
                 mPort = null;
             }

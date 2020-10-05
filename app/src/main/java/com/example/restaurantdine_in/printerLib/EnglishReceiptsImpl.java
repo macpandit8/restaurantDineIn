@@ -504,8 +504,6 @@ public class EnglishReceiptsImpl extends ILocalizeReceipts {
 
         builder.append((
                 "Star Clothing Boutique\n" +
-                        "123 Star Road\n" +
-                        "City, State 12345\n" +
                         "\n").getBytes(encoding));
 
         builder.appendAlignment(AlignmentPosition.Left);
@@ -520,20 +518,12 @@ public class EnglishReceiptsImpl extends ILocalizeReceipts {
         builder.append((
                 "SKU             Description          Total\n" +
                         "300678566       PLAIN T-SHIRT        10.99\n" +
-                        "300692003       BLACK DENIM          29.99\n" +
-                        "300651148       BLUE DENIM           29.99\n" +
-                        "300642980       STRIPED DRESS        49.99\n" +
-                        "300638471       BLACK BOOTS          35.99\n" +
                         "\n" +
                         "Subtotal                            156.95\n" +
                         "Tax                                   0.00\n" +
                         "------------------------------------------\n" +
                         "Total                              $156.95\n" +
                         "------------------------------------------\n" +
-                        "\n" +
-                        "Charge\n" +
-                        "156.95\n" +
-                        "Visa XXXX-XXXX-XXXX-0123\n" +
                         "\n").getBytes(encoding));
 
         builder.appendInvert(("Refunds and Exchanges\n").getBytes(encoding));
