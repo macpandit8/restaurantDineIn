@@ -136,4 +136,9 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="ABOUT_TEXTVIEW_STYLE">
+        <item name="android:textSize">@dimen/text_size_20sp</item>
+        <item name="android:layout_margin">@dimen/margin_10dp</item>
+    </style>
+
 </resources>

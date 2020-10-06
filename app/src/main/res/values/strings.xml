@@ -33,4 +33,9 @@
     <string name="msg_do_you_want_to_delete">Do you want to delete this item?</string>
     <string name="msg_discard_changes_go_back">Do you want to discard changes and go back?</string>
     <string name="msg_clear_order">Do you want to clear whole order?</string>
+    <string name="ok_caps">OK</string>
+    <string name="no_printer_configuration">No printer configuration found!</string>
+    <string name="confirm_test_printing">Do you want to PRINT test page?</string>
+    <string name="connected">Connected</string>
+    <string name="disconnected">Disconnected</string>
 </resources>
