@@ -3,11 +3,14 @@ package com.example.restaurantdine_in;
 import androidx.fragment.app.FragmentActivity;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.restaurantdine_in.dialogs.DialogBoxHelper;
 
 public class BaseActivity extends FragmentActivity {
 
@@ -15,10 +18,12 @@ public class BaseActivity extends FragmentActivity {
     ImageView imgBack = null;
     Button resetButton = null;
     Button placeOrderButton = null;
+    public AlertDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        progressDialog = DialogBoxHelper.progressDialog(this);
     }
 
     @Override

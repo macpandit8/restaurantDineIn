@@ -11,6 +11,7 @@ public class PrinterSettingConstant {
     public static final int LANGUAGE_SIMPLIFIED_CHINESE = 7;
     public static final int LANGUAGE_TRADITIONAL_CHINESE = 8;
     public static final int LANGUAGE_CJK_UNIFIED_IDEOGRAPH = 9;
+    public static final int LANGUAGE_PRINT_ORDER = 11;
 
     public static final int PAPER_SIZE_TWO_INCH = 384;
     public static final int PAPER_SIZE_THREE_INCH = 576;

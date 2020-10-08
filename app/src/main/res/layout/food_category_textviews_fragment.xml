@@ -4,67 +4,66 @@ android:layout_width="match_parent"
 android:layout_height="match_parent"
 android:orientation="vertical"
 android:weightSum="1"
-android:background="@drawable/left_border_background"
-android:layout_weight="0.4">
+android:background="@drawable/left_border_background">
 
-<LinearLayout
-    style="@style/MENU_SCREEN_LINEAR_LAYOUT"
-    android:layout_weight="0.25">
+    <LinearLayout
+        style="@style/MENU_SCREEN_LINEAR_LAYOUT"
+        android:layout_weight="0.25">
 
-    <TextView
-        android:id="@+id/appetizersTextview"
-        style="@style/MENU_SCREEN_TEXTVIEW"
-        android:text="@string/appetizers"/>
-    <TextView
-        android:id="@+id/vegetarianTextview"
-        style="@style/MENU_SCREEN_TEXTVIEW"
-        android:text="@string/vegetarian"/>
+        <TextView
+            android:id="@+id/appetizersTextview"
+            style="@style/MENU_SCREEN_TEXTVIEW"
+            android:text="@string/appetizers"/>
+        <TextView
+            android:id="@+id/vegetarianTextview"
+            style="@style/MENU_SCREEN_TEXTVIEW"
+            android:text="@string/vegetarian"/>
 
-</LinearLayout>
+    </LinearLayout>
 
-<LinearLayout
-    style="@style/MENU_SCREEN_LINEAR_LAYOUT"
-    android:layout_weight="0.25">
+    <LinearLayout
+        style="@style/MENU_SCREEN_LINEAR_LAYOUT"
+        android:layout_weight="0.25">
 
-    <TextView
-        android:id="@+id/chickenTextview"
-        style="@style/MENU_SCREEN_TEXTVIEW"
-        android:text="@string/chicken"/>
-    <TextView
-        android:id="@+id/lambTextview"
-        style="@style/MENU_SCREEN_TEXTVIEW"
-        android:text="@string/lamb"/>
+        <TextView
+            android:id="@+id/chickenTextview"
+            style="@style/MENU_SCREEN_TEXTVIEW"
+            android:text="@string/chicken"/>
+        <TextView
+            android:id="@+id/lambTextview"
+            style="@style/MENU_SCREEN_TEXTVIEW"
+            android:text="@string/lamb"/>
 
-</LinearLayout>
+    </LinearLayout>
 
-<LinearLayout
-    style="@style/MENU_SCREEN_LINEAR_LAYOUT"
-    android:layout_weight="0.25">
+    <LinearLayout
+        style="@style/MENU_SCREEN_LINEAR_LAYOUT"
+        android:layout_weight="0.25">
 
-    <TextView
-        android:id="@+id/seaFoodTextview"
-        style="@style/MENU_SCREEN_TEXTVIEW"
-        android:text="@string/seafood"/>
-    <TextView
-        android:id="@+id/breadsTextview"
-        style="@style/MENU_SCREEN_TEXTVIEW"
-        android:text="@string/breads"/>
+        <TextView
+            android:id="@+id/seaFoodTextview"
+            style="@style/MENU_SCREEN_TEXTVIEW"
+            android:text="@string/seafood"/>
+        <TextView
+            android:id="@+id/breadsTextview"
+            style="@style/MENU_SCREEN_TEXTVIEW"
+            android:text="@string/breads"/>
 
-</LinearLayout>
+    </LinearLayout>
 
-<LinearLayout
-    style="@style/MENU_SCREEN_LINEAR_LAYOUT"
-    android:layout_weight="0.25">
+    <LinearLayout
+        style="@style/MENU_SCREEN_LINEAR_LAYOUT"
+        android:layout_weight="0.25">
 
-    <TextView
-        android:id="@+id/drinksTextview"
-        style="@style/MENU_SCREEN_TEXTVIEW"
-        android:text="@string/drinks"/>
-    <TextView
-        style="@style/MENU_SCREEN_TEXTVIEW"
-        android:text="Extras"
-        android:visibility="invisible"/>
+        <TextView
+            android:id="@+id/drinksTextview"
+            style="@style/MENU_SCREEN_TEXTVIEW"
+            android:text="@string/drinks"/>
+        <TextView
+            style="@style/MENU_SCREEN_TEXTVIEW"
+            android:text="Extras"
+            android:visibility="invisible"/>
 
-</LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>

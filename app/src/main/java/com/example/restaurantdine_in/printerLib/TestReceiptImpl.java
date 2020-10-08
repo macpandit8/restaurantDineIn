@@ -15,10 +15,11 @@ import com.starmicronics.starioextension.ICommandBuilder.BarcodeSymbology;
 import com.starmicronics.starioextension.ICommandBuilder.BarcodeWidth;
 
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 
-public class EnglishReceiptsImpl extends ILocalizeReceipts {
+public class TestReceiptImpl extends ILocalizeReceipts {
 
-    public EnglishReceiptsImpl() {
+    public TestReceiptImpl() {
         mLanguageCode = "En";
 
         mCharacterCode = CharacterCode.Standard;
@@ -482,7 +483,11 @@ public class EnglishReceiptsImpl extends ILocalizeReceipts {
     }
 
     @Override
-    public void appendDotImpact3inchTextReceiptData(ICommandBuilder builder, boolean utf8) {
+    public void appendDotImpact3inchTextReceiptData(ICommandBuilder builder, boolean utf8,
+                                                    int tableNo,
+                                                    ArrayList<Integer> foodItemCountList,
+                                                    ArrayList<String> foodItemNameList,
+                                                    ArrayList<String> foodItemCommentList) {
         Charset encoding;
 
         if (utf8) {
@@ -500,39 +505,43 @@ public class EnglishReceiptsImpl extends ILocalizeReceipts {
 
         builder.appendCharacterSpace(0);
 
+        builder.appendFontStyle(ICommandBuilder.FontStyleType.A);
         builder.appendAlignment(AlignmentPosition.Center);
-
         builder.append((
-                "Star Clothing Boutique\n" +
-                        "\n").getBytes(encoding));
+                "TABLE\n").getBytes(encoding));
+
+        builder.appendAlignment(AlignmentPosition.Center);
+        builder.appendMultiple((String.valueOf(tableNo)).getBytes(encoding), 2, 2);
+        builder.append(("\n").getBytes(encoding));
 
         builder.appendAlignment(AlignmentPosition.Left);
 
-        builder.append((
-                "Date:MM/DD/YYYY              Time:HH:MM PM\n" +
-                        "------------------------------------------\n" +
-                        "\n").getBytes(encoding));
+        builder.append(("Date:").getBytes(encoding));
+        builder.append(getCurrentDate().getBytes(encoding));
+        builder.append(("              ").getBytes(encoding));
+        builder.append(("Time:").getBytes(encoding));
+        builder.append(getCurrentTime().getBytes(encoding));
+        builder.append(("\n" +
+                "------------------------------------------\n").getBytes(encoding));
 
-        builder.appendEmphasis(("SALE \n").getBytes(encoding));
+        builder.appendFontStyle(ICommandBuilder.FontStyleType.B);
+        for (int i = 0; i < foodItemCountList.size(); i++) {
+            builder.appendAlignment(AlignmentPosition.Left);
+            builder.appendEmphasis(String.valueOf(foodItemCountList.get(i)).getBytes(encoding));
+//            builder.appendMultipleWidth(String.valueOf(foodItemCountList.get(i)).getBytes(encoding), 2);
+            builder.append((" X ").getBytes(encoding));
+            builder.appendEmphasis(foodItemNameList.get(i).getBytes(encoding));
+            if (!foodItemCommentList.get(i).equals(getOneCharSpace())) {
+                builder.append(("(").getBytes(encoding));
+                builder.appendInvert((foodItemCommentList.get(i)).toUpperCase().getBytes(encoding));
+                builder.append((")").getBytes(encoding));
+            }
+            builder.append(("\n").getBytes(encoding));
+        }
 
-        builder.append((
-                "SKU             Description          Total\n" +
-                        "300678566       PLAIN T-SHIRT        10.99\n" +
-                        "\n" +
-                        "Subtotal                            156.95\n" +
-                        "Tax                                   0.00\n" +
-                        "------------------------------------------\n" +
-                        "Total                              $156.95\n" +
-                        "------------------------------------------\n" +
-                        "\n").getBytes(encoding));
+        builder.appendFontStyle(ICommandBuilder.FontStyleType.A);
+        builder.append(("------------------------------------------\n").getBytes(encoding));
 
-        builder.appendInvert(("Refunds and Exchanges\n").getBytes(encoding));
-
-        builder.append(("Within ").getBytes(encoding));
-
-        builder.appendUnderLine(("30 days").getBytes(encoding));
-
-        builder.append((" with receipt\n").getBytes(encoding));
     }
 
     @Override
