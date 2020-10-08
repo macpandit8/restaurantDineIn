@@ -1,26 +1,48 @@
 package com.example.restaurantdine_in.dashboard;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.restaurantdine_in.AboutActivity;
 import com.example.restaurantdine_in.Constants;
+import com.example.restaurantdine_in.printerLib.KitchenPrinterActivity;
 import com.example.restaurantdine_in.food_selection.PlaceOrderActivity;
 import com.example.restaurantdine_in.R;
+import com.example.restaurantdine_in.printerLib.ModelCapability;
+import com.example.restaurantdine_in.printerLib.PrinterSettingManager;
+import com.example.restaurantdine_in.printerLib.PrinterSettings;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class DashboardFragment extends Fragment implements IDashboardActivityListener {
 
     ImageView tb1, tb2, tb3, tb4, tb5, tb6, tb7, tb8, tb9;
+    ImageView kitchen, cashRegister;
+
 
     private DashboardActivity dashboardActivity = null;
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (hasKitchenPrinterConfiguration(getActivity())) {
+            kitchen.setImageResource(R.drawable.kitchen_connected);
+        } else {
+            kitchen.setImageResource(R.drawable.kitchen_disconnected);
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,6 +61,24 @@ public class DashboardFragment extends Fragment implements IDashboardActivityLis
         tb7 = dashboardView.findViewById(R.id.tb7);
         tb8 = dashboardView.findViewById(R.id.tb8);
         tb9 = dashboardView.findViewById(R.id.tb9);
+
+        kitchen = dashboardView.findViewById(R.id.kitchen);
+        kitchen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent kitchenIntent = new Intent(getActivity(), KitchenPrinterActivity.class);
+                getActivity().startActivity(kitchenIntent);
+            }
+        });
+
+        cashRegister = dashboardView.findViewById(R.id.cashRegister);
+        cashRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent aboutActivityIntent = new Intent(getActivity(), AboutActivity.class);
+                startActivity(aboutActivityIntent);
+            }
+        });
 
         Table table1 = new Table(tb1, Constants.SEAT_CAP_FOUR, Constants.SQUARE_TABLE, Constants.TABLE_NO_1);
         Table table2 = new Table(tb2, Constants.SEAT_CAP_FOUR, Constants.SQUARE_TABLE, Constants.TABLE_NO_2);
@@ -64,6 +104,26 @@ public class DashboardFragment extends Fragment implements IDashboardActivityLis
         onClickListener(tables);
 
         return dashboardView;
+    }
+
+    public static boolean hasKitchenPrinterConfiguration(Context context) {
+        PrinterSettingManager settingManager = new PrinterSettingManager(context);
+        PrinterSettings settings       = settingManager.getPrinterSettings();
+
+        boolean isDeviceSelected     = false;
+        int     modelIndex           = ModelCapability.NONE;
+        String  modelName            = "";
+        boolean isBluetoothInterface = false;
+        boolean isUsbInterface       = false;
+
+        if (settings != null) {
+            isDeviceSelected     = true;
+            modelIndex           = settings.getModelIndex();
+            modelName            = settings.getModelName();
+            isBluetoothInterface = settings.getPortName().toUpperCase().startsWith("BT:");
+            isUsbInterface       = settings.getPortName().toUpperCase().startsWith("USB:");
+        }
+        return isDeviceSelected;
     }
 
     private void onClickListener(ArrayList<Table> tables) {
@@ -94,5 +154,6 @@ public class DashboardFragment extends Fragment implements IDashboardActivityLis
             });
         }
     }
+
 
 }

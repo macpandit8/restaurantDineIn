@@ -27,6 +27,12 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+
+    //Star Printer dependencies
+    implementation 'com.starmicronics:stario:2.9.0'
+    implementation 'com.starmicronics:starioextension:1.15.0'
+    implementation 'com.starmicronics:smcloudservices:1.4.1'
+
 }
 
 apply plugin: 'com.google.gms.google-services'

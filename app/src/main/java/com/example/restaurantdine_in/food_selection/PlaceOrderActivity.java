@@ -1,5 +1,6 @@
 package com.example.restaurantdine_in.food_selection;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,10 +20,18 @@ import com.example.restaurantdine_in.R;
 import com.example.restaurantdine_in.dialogs.DialogBoxHelper;
 import com.example.restaurantdine_in.dialogs.EditTextDialogFragment;
 import com.example.restaurantdine_in.adapters.OrderItemListAdapter;
+import com.example.restaurantdine_in.printerLib.CommonAlertDialogFragment;
+import com.example.restaurantdine_in.printerLib.Communication;
+import com.example.restaurantdine_in.printerLib.ILocalizeReceipts;
+import com.example.restaurantdine_in.printerLib.ModelCapability;
+import com.example.restaurantdine_in.printerLib.PrinterFunctions;
+import com.example.restaurantdine_in.printerLib.PrinterSettingManager;
+import com.example.restaurantdine_in.printerLib.PrinterSettings;
+import com.starmicronics.starioextension.StarIoExt;
 
 import java.util.ArrayList;
 
-public class PlaceOrderActivity extends BaseActivity implements View.OnClickListener, IOnEditTextDialogListener, IAddItemsToOrderListener {
+public class PlaceOrderActivity extends BaseActivity implements View.OnClickListener, IOnEditTextDialogListener, IAddItemsToOrderListener,  CommonAlertDialogFragment.Callback{
 
     private OrderItemListAdapter orderItemListAdapter = null;
 
@@ -33,6 +42,8 @@ public class PlaceOrderActivity extends BaseActivity implements View.OnClickList
     ArrayList<String> foodItemNameList = new ArrayList<>();
     ArrayList<String> foodItemCommentList = new ArrayList<>();
     ArrayList<Double> foodItemPriceList = new ArrayList<>();
+
+    private boolean mIsForeground;
 
     private IFoodItemSelectionFragmentListener foodItemSelectionFragmentListener;
 
@@ -103,6 +114,12 @@ public class PlaceOrderActivity extends BaseActivity implements View.OnClickList
 
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        mIsForeground = false;
+    }
+
 
     /**
      * Method is called to setup action bar and onClickListeners for following buttons
@@ -154,9 +171,32 @@ public class PlaceOrderActivity extends BaseActivity implements View.OnClickList
 
                     @Override
                     public void onClick(View view) {    //Place Order Button
-                        Log.i("mayank", "place order clicked");
+                        mIsForeground = true;
+                        placeOrderAndSendPrintCommand();
                     }
                 });
+    }
+
+    private void placeOrderAndSendPrintCommand() {
+
+        progressDialog.show();
+
+        byte[] commands;
+
+        PrinterSettingManager settingManager = new PrinterSettingManager(this);
+        PrinterSettings settings = settingManager.getPrinterSettings();
+
+        StarIoExt.Emulation emulation = ModelCapability.getEmulation(settings.getModelIndex());
+        int paperSize = settings.getPaperSize();
+
+        ILocalizeReceipts localizeReceipts = ILocalizeReceipts.createLocalizeReceipts(false, paperSize);
+
+        commands = PrinterFunctions.createTextReceiptData(emulation, localizeReceipts, false, tableNo, foodItemCountList, foodItemNameList, foodItemCommentList);
+
+        if (settings != null) {
+            Communication.sendCommands(this, commands, settings.getPortName(), settings.getPortSettings(), 10000, 30000, this, mCallback);
+        }
+
     }
 
     /**
@@ -216,9 +256,33 @@ public class PlaceOrderActivity extends BaseActivity implements View.OnClickList
             this.foodItemPriceList.addAll(foodItemPriceList);
 
             for(int i = 0; i < foodCountList.size(); i++) {
-                foodItemCommentList.add("");
+                foodItemCommentList.add(" ");
             }
         }
         notifyDataSetChangedAndCalculateTotalBill();
+    }
+
+    private final Communication.SendCallback mCallback = new Communication.SendCallback() {
+        @Override
+        public void onStatus(Communication.CommunicationResult communicationResult) {
+            if (!mIsForeground) {
+                return;
+            }
+
+            if (progressDialog != null) {
+                progressDialog.dismiss();
+            }
+
+            CommonAlertDialogFragment dialog = CommonAlertDialogFragment.newInstance("CommResultDialog");
+            dialog.setTitle("Communication Result");
+            dialog.setMessage(Communication.getCommunicationResultMessage(communicationResult));
+            dialog.setPositiveButton("OK");
+            dialog.show(getSupportFragmentManager());
+        }
+    };
+
+    @Override
+    public void onDialogResult(String tag, Intent data) {
+        //Do nothing
     }
 }

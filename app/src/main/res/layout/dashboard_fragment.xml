@@ -226,12 +226,13 @@
             android:layout_weight="0.4">
 
             <ImageView
+                android:id="@+id/kitchen"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="0.4"
                 android:paddingBottom="@dimen/margin_25dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/kitchen" />
+                android:src="@drawable/kitchen_disconnected" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -273,6 +274,7 @@
                     android:layout_weight="0.5">
 
                     <ImageView
+                        android:id="@+id/cashRegister"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:src="@drawable/cash_register" />
