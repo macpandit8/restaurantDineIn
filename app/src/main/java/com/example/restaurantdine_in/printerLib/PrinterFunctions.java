@@ -24,12 +24,16 @@ import com.starmicronics.starioextension.IBezelCommandBuilder.Mode;
 
 public class PrinterFunctions {
 
-    public static byte[] createTextReceiptData(Emulation emulation, ILocalizeReceipts localizeReceipts, boolean utf8) {
+    public static byte[] createTextReceiptData(Emulation emulation, ILocalizeReceipts localizeReceipts, boolean utf8,
+                                               int tableNo,
+                                               ArrayList<Integer> foodItemCountList,
+                                               ArrayList<String> foodItemNameList,
+                                               ArrayList<String> foodItemCommentList) {
         ICommandBuilder builder = StarIoExt.createCommandBuilder(emulation);
 
         builder.beginDocument();
 
-        localizeReceipts.appendTextReceiptData(builder, utf8);
+        localizeReceipts.appendTextReceiptData(builder, utf8, tableNo, foodItemCountList, foodItemNameList, foodItemCommentList);
 
         builder.appendCutPaper(CutPaperAction.PartialCutWithFeed);
 

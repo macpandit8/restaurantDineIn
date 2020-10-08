@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 
@@ -23,6 +24,11 @@ import com.example.restaurantdine_in.printerLib.PrinterSettingManager;
 import com.example.restaurantdine_in.printerLib.PrinterSettings;
 import com.starmicronics.starioextension.StarIoExt;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+
 public class AboutActivity extends BaseActivity implements View.OnClickListener, CommonAlertDialogFragment.Callback{
 
     Button testPrinterBtn;
@@ -31,6 +37,11 @@ public class AboutActivity extends BaseActivity implements View.OnClickListener,
     AlertDialog mProgressDialog;
 
     private boolean mIsForeground;
+
+    int tableNo;
+    ArrayList<Integer> countList;
+    ArrayList<String> nameList;
+    ArrayList<String> commentList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +54,26 @@ public class AboutActivity extends BaseActivity implements View.OnClickListener,
 
         testPrinterBtn = findViewById(R.id.testPrinterBtn);
         testPrinterBtn.setOnClickListener(this);
+
+        countList = new ArrayList<>();
+        nameList = new ArrayList<>();
+        commentList = new ArrayList<>();
+        initializeTestPrintData();
+    }
+
+    private void initializeTestPrintData() {
+        tableNo = 10;
+        countList.add(1);
+        countList.add(5);
+        countList.add(10);
+
+        nameList.add("Item1");
+        nameList.add("Item no 2");
+        nameList.add("item #3");
+
+        commentList.add(" ");
+        commentList.add("Comment 2");
+        commentList.add("Comment number #3");
     }
 
     @Override
@@ -98,12 +129,12 @@ public class AboutActivity extends BaseActivity implements View.OnClickListener,
         StarIoExt.Emulation emulation = ModelCapability.getEmulation(settings.getModelIndex());
         int paperSize = settings.getPaperSize();
 
-        ILocalizeReceipts localizeReceipts = ILocalizeReceipts.createLocalizeReceipts(0, paperSize);
+        ILocalizeReceipts localizeReceipts = ILocalizeReceipts.createLocalizeReceipts(true, paperSize);
 
         switch (1) {
             default:
             case 1:
-                commands = PrinterFunctions.createTextReceiptData(emulation, localizeReceipts, false);
+                commands = PrinterFunctions.createTextReceiptData(emulation, localizeReceipts, false, tableNo, countList, nameList, commentList);
                 break;
 //            case 2:
 //                commands = PrinterFunctions.createTextReceiptData(emulation, localizeReceipts, true);
@@ -132,8 +163,9 @@ public class AboutActivity extends BaseActivity implements View.OnClickListener,
 //                }
 //                break;
         }
-
-        Communication.sendCommands(this, commands, settings.getPortName(), settings.getPortSettings(), 10000, 30000, this, mCallback);     // 10000mS!!!
+        if (settings != null) {
+            Communication.sendCommands(this, commands, settings.getPortName(), settings.getPortSettings(), 10000, 30000, this, mCallback);     // 10000mS!!!
+        }
     }
 
     private final Communication.SendCallback mCallback = new Communication.SendCallback() {

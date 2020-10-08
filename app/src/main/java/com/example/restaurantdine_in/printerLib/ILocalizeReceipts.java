@@ -10,9 +10,15 @@ import android.graphics.Typeface;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
+import android.widget.Toast;
 
 import com.starmicronics.starioextension.ICommandBuilder;
 import com.starmicronics.starioextension.StarIoExt.CharacterCode;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 
 public abstract class ILocalizeReceipts {
     private int mPaperSize;
@@ -23,10 +29,16 @@ public abstract class ILocalizeReceipts {
     private   String        mScalePaperSizeStr;
     protected CharacterCode mCharacterCode;
 
-    public static ILocalizeReceipts createLocalizeReceipts(int language, int paperSize) {
+    public static ILocalizeReceipts createLocalizeReceipts(boolean isTestReceipt, int paperSize) {
         ILocalizeReceipts localizeReceipts ;
 
-        switch (language) {
+        if (isTestReceipt) {
+            localizeReceipts = new TestReceiptImpl();
+        } else {
+            localizeReceipts = new OrderReceiptImpl();
+        }
+
+//        switch (language) {
 //            case PrinterSettingConstant.LANGUAGE_ENGLISH:
 //                localizeReceipts = new EnglishReceiptsImpl(); break;
 //            case PrinterSettingConstant.LANGUAGE_JAPANESE:
@@ -46,9 +58,9 @@ public abstract class ILocalizeReceipts {
 //            case PrinterSettingConstant.LANGUAGE_TRADITIONAL_CHINESE:
 //                localizeReceipts = new TraditionalChineseReceiptsImpl(); break;
 ////          case PrinterSettingConstant.LANGUAGE_CJK_UNIFIED_IDEOGRAPH:
-            default:
-                localizeReceipts = new EnglishReceiptsImpl(); break;
-        }
+//            default:
+//                localizeReceipts = new PrintTestReceiptImpl(); break;
+//        }
 
         switch (paperSize) {
             case PrinterSettingConstant.PAPER_SIZE_TWO_INCH:
@@ -69,13 +81,33 @@ public abstract class ILocalizeReceipts {
                 break;
         }
 
-        localizeReceipts.setLanguage(language);
+//        localizeReceipts.setLanguage(language);
         localizeReceipts.setPaperSize(paperSize);
 
         return localizeReceipts;
     }
 
-    public void appendTextReceiptData(ICommandBuilder builder, boolean utf8) {
+    public String getCurrentDate() {
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date date = new Date();
+        return dateFormat.format(date);
+    }
+
+    public String getCurrentTime() {
+        DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+        Date time = new Date();
+        return timeFormat.format(time);
+    }
+
+    public String getOneCharSpace() {
+        return " ";
+    }
+
+    public void appendTextReceiptData(ICommandBuilder builder, boolean utf8,
+                                      int tableNo,
+                                      ArrayList<Integer> foodItemCountList,
+                                      ArrayList<String> foodItemNameList,
+                                      ArrayList<String> foodItemCommentList) {
         switch (mPaperSize) {
             case PrinterSettingConstant.PAPER_SIZE_TWO_INCH:
                 append2inchTextReceiptData(builder, utf8);
@@ -94,7 +126,7 @@ public abstract class ILocalizeReceipts {
                 break;
 //          case PrinterSettingConstant.PAPER_SIZE_DOT_THREE_INCH:
             default:
-                appendDotImpact3inchTextReceiptData(builder, utf8);
+                appendDotImpact3inchTextReceiptData(builder, utf8, tableNo, foodItemCountList, foodItemNameList, foodItemCommentList);
                 break;
         }
     }
@@ -205,7 +237,11 @@ public abstract class ILocalizeReceipts {
 
     public abstract void appendEscPos3inchTextReceiptData(ICommandBuilder builder, boolean utf8);
 
-    public abstract void appendDotImpact3inchTextReceiptData(ICommandBuilder builder, boolean utf8);
+    public abstract void appendDotImpact3inchTextReceiptData(ICommandBuilder builder, boolean utf8,
+                                                             int tableNo,
+                                                             ArrayList<Integer> foodItemCountList,
+                                                             ArrayList<String> foodItemNameList,
+                                                             ArrayList<String> foodItemCommentList);
 
     public abstract Bitmap createSk12inchRasterReceiptImage();
 
