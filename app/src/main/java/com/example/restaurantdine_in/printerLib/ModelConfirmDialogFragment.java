@@ -44,7 +44,7 @@ public class ModelConfirmDialogFragment extends CommonAlertDialogFragment {
                 intentForPassingData.putExtra(LABEL_POSITIVE, LABEL_POSITIVE);
                 intentForPassingData.putExtra(PrinterSettingConstant.BUNDLE_KEY_MODEL_INDEX, args.getInt(PrinterSettingConstant.BUNDLE_KEY_MODEL_INDEX));
 
-                callbackToTarget(args.getString(DIALOG_TAG), intentForPassingData);
+                callbackToTarget(args.getString(DIALOG_TAG), intentForPassingData, "");
 
                 dialog.dismiss();
             }
@@ -56,7 +56,7 @@ public class ModelConfirmDialogFragment extends CommonAlertDialogFragment {
                 Intent intentForPassingData = new Intent();
                 intentForPassingData.putExtra(LABEL_NEGATIVE, LABEL_NEGATIVE);
 
-                callbackToTarget(args.getString(DIALOG_TAG), intentForPassingData);
+                callbackToTarget(args.getString(DIALOG_TAG), intentForPassingData, "");
 
                 dialog.dismiss();
             }

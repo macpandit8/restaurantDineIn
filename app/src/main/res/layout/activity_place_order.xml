@@ -43,7 +43,7 @@
             <TextView
                 style="@style/MENU_SCREEN_ORDERLIST_TEXTVIEW"
                 android:layout_weight="0.5"
-                android:textSize="@dimen/text_size_40sp"
+                android:textSize="@dimen/text_size_30sp"
                 android:layout_gravity="center_vertical"
                 android:textAlignment="center"
                 android:text="TOTAL"/>
@@ -53,7 +53,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.3"
                 android:textAlignment="center"
-                android:textSize="@dimen/text_size_40sp"
+                android:textSize="@dimen/text_size_30sp"
                 android:paddingLeft="@dimen/margin_20dp"
                 android:text="$"/>
             <TextView
@@ -61,7 +61,7 @@
                 style="@style/MENU_SCREEN_ORDERLIST_TEXTVIEW"
                 android:layout_weight="0.2"
                 android:layout_gravity="center_vertical"
-                android:textSize="@dimen/text_size_40sp"
+                android:textSize="@dimen/text_size_30sp"
                 android:gravity="right"
                 android:text="100.00"/>
 

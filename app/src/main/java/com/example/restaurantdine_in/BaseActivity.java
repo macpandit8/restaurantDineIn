@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.restaurantdine_in.dialogs.DialogBoxHelper;
+import com.example.restaurantdine_in.printerLib.CommonAlertDialogFragment;
+import com.example.restaurantdine_in.printerLib.Communication;
 
 public class BaseActivity extends FragmentActivity {
 
@@ -19,6 +21,7 @@ public class BaseActivity extends FragmentActivity {
     Button resetButton = null;
     Button placeOrderButton = null;
     public AlertDialog progressDialog;
+    public boolean mIsForeground;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +63,7 @@ public class BaseActivity extends FragmentActivity {
      * @param onResetClickListener
      * @param onPlaceOrderClickListener
      */
-    public void setupActionBar(String title, View.OnClickListener onBackBtnClickListener, View.OnClickListener onResetClickListener, View. OnClickListener onPlaceOrderClickListener) {
+    public void setupActionBar(String title, View.OnClickListener onBackBtnClickListener, View.OnClickListener onResetClickListener, View.OnClickListener onPlaceOrderClickListener) {
         menuScreenTitleBar.setText(title);
         imgBack.setOnClickListener(onBackBtnClickListener);
         resetButton.setOnClickListener(onResetClickListener);
@@ -75,4 +78,23 @@ public class BaseActivity extends FragmentActivity {
             super.onBackPressed();
         }
     }
+
+    public final Communication.SendCallback mCallback = new Communication.SendCallback() {
+        @Override
+        public void onStatus(Communication.CommunicationResult communicationResult) {
+            if (!mIsForeground) {
+                return;
+            }
+
+            if (progressDialog != null) {
+                progressDialog.dismiss();
+            }
+
+            CommonAlertDialogFragment dialog = CommonAlertDialogFragment.newInstance("CommResultDialog");
+            dialog.setTitle("Communication Result");
+            dialog.setMessage(Communication.getCommunicationResultMessage(communicationResult));
+            dialog.setPositiveButton("OK");
+            dialog.show(getSupportFragmentManager());
+        }
+    };
 }

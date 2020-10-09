@@ -58,7 +58,7 @@ public class DrawerOpenActiveSelectDialogFragment extends CommonAlertDialogFragm
             Intent intentForPassingData = new Intent();
             intentForPassingData.putExtra(PrinterSettingConstant.BUNDLE_KEY_DRAWER_OPEN_STATUS, activeHigh);
 
-            mCallbackTarget.onDialogResult(getArguments().getString(DIALOG_TAG), intentForPassingData);
+            mCallbackTarget.onDialogResult(getArguments().getString(DIALOG_TAG), intentForPassingData, "");
 
             dismiss();
         }
