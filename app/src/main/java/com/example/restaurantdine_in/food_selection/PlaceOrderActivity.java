@@ -16,6 +16,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.restaurantdine_in.BaseActivity;
 import com.example.restaurantdine_in.Constants;
+import com.example.restaurantdine_in.LocalPrinter;
 import com.example.restaurantdine_in.R;
 import com.example.restaurantdine_in.dialogs.DialogBoxHelper;
 import com.example.restaurantdine_in.dialogs.EditTextDialogFragment;
@@ -42,8 +43,6 @@ public class PlaceOrderActivity extends BaseActivity implements View.OnClickList
     ArrayList<String> foodItemNameList = new ArrayList<>();
     ArrayList<String> foodItemCommentList = new ArrayList<>();
     ArrayList<Double> foodItemPriceList = new ArrayList<>();
-
-    private boolean mIsForeground;
 
     private IFoodItemSelectionFragmentListener foodItemSelectionFragmentListener;
 
@@ -171,31 +170,17 @@ public class PlaceOrderActivity extends BaseActivity implements View.OnClickList
 
                     @Override
                     public void onClick(View view) {    //Place Order Button
-                        mIsForeground = true;
-                        placeOrderAndSendPrintCommand();
+                        if (foodItemCountList.size() != 0) {
+                            progressDialog.show();
+                            mIsForeground = true;
+                            placeOrderAndSendPrintCommand();
+                        }
                     }
                 });
     }
 
     private void placeOrderAndSendPrintCommand() {
-
-        progressDialog.show();
-
-        byte[] commands;
-
-        PrinterSettingManager settingManager = new PrinterSettingManager(this);
-        PrinterSettings settings = settingManager.getPrinterSettings();
-
-        StarIoExt.Emulation emulation = ModelCapability.getEmulation(settings.getModelIndex());
-        int paperSize = settings.getPaperSize();
-
-        ILocalizeReceipts localizeReceipts = ILocalizeReceipts.createLocalizeReceipts(false, paperSize);
-
-        commands = PrinterFunctions.createTextReceiptData(emulation, localizeReceipts, false, tableNo, foodItemCountList, foodItemNameList, foodItemCommentList);
-
-        if (settings != null) {
-            Communication.sendCommands(this, commands, settings.getPortName(), settings.getPortSettings(), 10000, 30000, this, mCallback);
-        }
+        LocalPrinter.print(this, false, tableNo, foodItemCountList, foodItemNameList, foodItemCommentList, mCallback);
 
     }
 
@@ -262,27 +247,10 @@ public class PlaceOrderActivity extends BaseActivity implements View.OnClickList
         notifyDataSetChangedAndCalculateTotalBill();
     }
 
-    private final Communication.SendCallback mCallback = new Communication.SendCallback() {
-        @Override
-        public void onStatus(Communication.CommunicationResult communicationResult) {
-            if (!mIsForeground) {
-                return;
-            }
-
-            if (progressDialog != null) {
-                progressDialog.dismiss();
-            }
-
-            CommonAlertDialogFragment dialog = CommonAlertDialogFragment.newInstance("CommResultDialog");
-            dialog.setTitle("Communication Result");
-            dialog.setMessage(Communication.getCommunicationResultMessage(communicationResult));
-            dialog.setPositiveButton("OK");
-            dialog.show(getSupportFragmentManager());
-        }
-    };
-
     @Override
-    public void onDialogResult(String tag, Intent data) {
-        //Do nothing
+    public void onDialogResult(String tag, Intent data, String messageString) {
+        if (messageString.equals(Constants.PRINTER_SUCCESS)) {
+            finish();
+        }
     }
 }

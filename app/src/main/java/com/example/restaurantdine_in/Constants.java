@@ -10,6 +10,7 @@ public class Constants {
     public static final int SEAT_CAP_FOUR = 4;
     public static final int SEAT_CAP_TWO = 2;
     public static final int SEAT_CAP_TEN = 10;
+    public static final String PRINTER_SUCCESS = "Success!";
 
     /**
      * Table numbers

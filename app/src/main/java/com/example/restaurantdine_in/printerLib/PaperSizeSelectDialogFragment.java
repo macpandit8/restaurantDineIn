@@ -60,7 +60,7 @@ public class PaperSizeSelectDialogFragment extends CommonAlertDialogFragment {
             Intent intentForPassingData = new Intent();
             intentForPassingData.putExtra(PrinterSettingConstant.BUNDLE_KEY_PAPER_SIZE, selectedPaperSize);
 
-            mCallbackTarget.onDialogResult(getArguments().getString(DIALOG_TAG), intentForPassingData);
+            mCallbackTarget.onDialogResult(getArguments().getString(DIALOG_TAG), intentForPassingData, "");
 
             dismiss();
         }

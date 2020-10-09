@@ -103,7 +103,7 @@ public class KitchenPrinterActivity extends BaseActivity implements CommonAlertD
     }
 
     @Override
-    public void onDialogResult(String tag, Intent data) {
+    public void onDialogResult(String tag, Intent data, String messageString) {
         switch (tag) {
             case INTERFACE_SELECT_DIALOG: {
                 String[] selectedInterfaces = data.getStringArrayExtra(PrinterSettingConstant.BUNDLE_KEY_INTERFACE);

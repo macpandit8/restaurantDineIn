@@ -34,10 +34,6 @@ public class AboutActivity extends BaseActivity implements View.OnClickListener,
     Button testPrinterBtn;
     TextView printerStatusTV;
 
-    AlertDialog mProgressDialog;
-
-    private boolean mIsForeground;
-
     int tableNo;
     ArrayList<Integer> countList;
     ArrayList<String> nameList;
@@ -47,8 +43,6 @@ public class AboutActivity extends BaseActivity implements View.OnClickListener,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
-
-        mProgressDialog = DialogBoxHelper.progressDialog(this);
 
         printerStatusTV = findViewById(R.id.printerStatusTV);
 
@@ -99,12 +93,13 @@ public class AboutActivity extends BaseActivity implements View.OnClickListener,
         switch (view.getId()) {
 
             case R.id.testPrinterBtn:
-                mIsForeground = true;
                 if (DashboardFragment.hasKitchenPrinterConfiguration(this)) {
                     DialogBoxHelper.showDialog(this, getString(R.string.yes_caps), getString(R.string.no_caps), getString(R.string.confirm_test_printing), true
                             , new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
+                                    progressDialog.show();
+                                    mIsForeground = true;
                                     printTest();
                                 }
                             }, null).show();
@@ -117,78 +112,11 @@ public class AboutActivity extends BaseActivity implements View.OnClickListener,
     }
 
     private void printTest() {
-        //TODO: Code Cleanup required
-
-        mProgressDialog.show();
-
-        byte[] commands;
-
-        PrinterSettingManager settingManager = new PrinterSettingManager(this);
-        PrinterSettings settings       = settingManager.getPrinterSettings();
-
-        StarIoExt.Emulation emulation = ModelCapability.getEmulation(settings.getModelIndex());
-        int paperSize = settings.getPaperSize();
-
-        ILocalizeReceipts localizeReceipts = ILocalizeReceipts.createLocalizeReceipts(true, paperSize);
-
-        switch (1) {
-            default:
-            case 1:
-                commands = PrinterFunctions.createTextReceiptData(emulation, localizeReceipts, false, tableNo, countList, nameList, commentList);
-                break;
-//            case 2:
-//                commands = PrinterFunctions.createTextReceiptData(emulation, localizeReceipts, true);
-//                break;
-//            case 3:
-//                commands = PrinterFunctions.createRasterReceiptData(emulation, localizeReceipts, getResources());
-//                break;
-//            case 4:
-//                commands = PrinterFunctions.createScaleRasterReceiptData(emulation, localizeReceipts, getResources(), paperSize, true);
-//                break;
-//            case 5:
-//                commands = PrinterFunctions.createScaleRasterReceiptData(emulation, localizeReceipts, getResources(), paperSize, false);
-//                break;
-//            case 6:
-//                commands = PrinterFunctions.createCouponData(emulation, localizeReceipts, getResources(), paperSize, ICommandBuilder.BitmapConverterRotation.Normal);
-//                break;
-//            case 7:
-//                commands = PrinterFunctions.createCouponData(emulation, localizeReceipts, getResources(), paperSize, ICommandBuilder.BitmapConverterRotation.Right90);
-//                break;
-//            case 8:
-//                if (mBitmap != null) {
-//                    commands = PrinterFunctions.createRasterData(emulation, mBitmap, paperSize, true);
-//                }
-//                else {
-//                    commands = new byte[0];
-//                }
-//                break;
-        }
-        if (settings != null) {
-            Communication.sendCommands(this, commands, settings.getPortName(), settings.getPortSettings(), 10000, 30000, this, mCallback);     // 10000mS!!!
-        }
+        LocalPrinter.print(this, true, tableNo, countList, nameList, commentList, mCallback);
     }
 
-    private final Communication.SendCallback mCallback = new Communication.SendCallback() {
-        @Override
-        public void onStatus(Communication.CommunicationResult communicationResult) {
-            if (!mIsForeground) {
-                return;
-            }
-
-            if (mProgressDialog != null) {
-                mProgressDialog.dismiss();
-            }
-
-            CommonAlertDialogFragment dialog = CommonAlertDialogFragment.newInstance("CommResultDialog");
-            dialog.setTitle("Communication Result");
-            dialog.setMessage(Communication.getCommunicationResultMessage(communicationResult));
-            dialog.setPositiveButton("OK");
-            dialog.show(getSupportFragmentManager());
-        }
-    };
-
     @Override
-    public void onDialogResult(String tag, Intent data) {
+    public void onDialogResult(String tag, Intent data, String messageString) {
         //Do nothing
     }
 }

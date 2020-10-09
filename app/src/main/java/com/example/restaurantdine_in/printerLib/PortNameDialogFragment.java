@@ -56,7 +56,7 @@ public class PortNameDialogFragment extends CommonAlertDialogFragment {
                 intentForPassingData.putExtra(LABEL_POSITIVE, LABEL_POSITIVE);
                 intentForPassingData.putExtra(PrinterSettingConstant.BUNDLE_KEY_PORT_NAME, editText.getText().toString());
 
-                callbackToTarget(args.getString(DIALOG_TAG), intentForPassingData);
+                callbackToTarget(args.getString(DIALOG_TAG), intentForPassingData, "");
 
                 dialog.dismiss();
             }
