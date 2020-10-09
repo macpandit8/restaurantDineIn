@@ -15,7 +15,7 @@ import androidx.fragment.app.FragmentTransaction;
 public class CommonAlertDialogFragment extends DialogFragment {
 
     public interface Callback {
-        void onDialogResult(String tag, Intent data);
+        void onDialogResult(String tag, Intent data, String messageString);
     }
 
     public static final String DIALOG_TAG     = "bundle_dialog_tag";
@@ -81,7 +81,7 @@ public class CommonAlertDialogFragment extends DialogFragment {
                     if (isCallback) {
                         Intent intentForPassingData = new Intent();
                         intentForPassingData.putExtra(LABEL_POSITIVE, LABEL_POSITIVE);
-                        callbackToTarget(args.getString(DIALOG_TAG), intentForPassingData);
+                        callbackToTarget(args.getString(DIALOG_TAG), intentForPassingData, getArguments().getString(MESSAGE_STRING, ""));
                     }
 
                     dialog.dismiss();
@@ -101,7 +101,7 @@ public class CommonAlertDialogFragment extends DialogFragment {
                     if (isCallback) {
                         Intent intentForPassingData = new Intent();
                         intentForPassingData.putExtra(LABEL_NEGATIVE, LABEL_NEGATIVE);
-                        callbackToTarget(args.getString(DIALOG_TAG), intentForPassingData);
+                        callbackToTarget(args.getString(DIALOG_TAG), intentForPassingData, "");
                     }
 
                     dialog.dismiss();
@@ -177,14 +177,14 @@ public class CommonAlertDialogFragment extends DialogFragment {
             if (isCallback) {
                 Intent intentForPassingData = new Intent();
                 intentForPassingData.putExtra(CANCEL, CANCEL);
-                callbackToTarget(args.getString(DIALOG_TAG), intentForPassingData);
+                callbackToTarget(args.getString(DIALOG_TAG), intentForPassingData, "");
             }
 
             dialog.dismiss();
         }
     }
 
-    protected void callbackToTarget(String tag, Intent intentForPassingData) {
+    protected void callbackToTarget(String tag, Intent intentForPassingData, String messageString) {
         Callback callback;
 
         if (getParentFragment() instanceof Callback) {
@@ -197,6 +197,6 @@ public class CommonAlertDialogFragment extends DialogFragment {
             throw new ClassCastException("Target must implement Callback.");
         }
 
-        callback.onDialogResult(tag, intentForPassingData);
+        callback.onDialogResult(tag, intentForPassingData, messageString);
     }
 }

@@ -107,7 +107,7 @@ public class ModelSelectDialogFragment extends CommonAlertDialogFragment {
             Intent intentForPassingData = new Intent();
             intentForPassingData.putExtra(PrinterSettingConstant.BUNDLE_KEY_MODEL_INDEX, model);
 
-            mCallbackTarget.onDialogResult(getArguments().getString(DIALOG_TAG), intentForPassingData);
+            mCallbackTarget.onDialogResult(getArguments().getString(DIALOG_TAG), intentForPassingData, "");
 
             dismiss();
         }
